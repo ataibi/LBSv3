@@ -64,4 +64,4 @@ typings/
 images/
 
 #config files
-#config.json
+config.json
