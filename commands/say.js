@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 
 module.exports.run = async (bot, message, args) => {
-  if (!message.member.roles.find(role => role.name === "LesGarsSûrs"))
+  if (!message.member.roles.find(role => role.name === "LesGarsSûrs")&& message.author.id != bot.user.id)
     return message.reply("mdr t'as cru j'allais répéter ce que tu voulais ? Si t'es pas un gars sûr tu vaux **rien** pour moi.");
   let botmessage = args.join(" ");
   if (!args[0])
