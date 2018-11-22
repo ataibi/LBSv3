@@ -19,7 +19,7 @@ module.exports.run = async (bot, message, args) => {
 	let cleanArg = 0;
 	if (args[0] != undefined)
 		cleanArg = args[0].replace(/\D/g,'');
-	let target = (cleanArg != 0 && message.guild.members.find('id', cleanArg) != undefined) ? message.guild.members.find('id', cleanArg).user : message.author;
+	let target = (cleanArg != 0 && message.guild.members.find(member => member.id === cleanArg) != undefined) ? message.guild.members.find(member => member.id === cleanArg).user : message.author;
 
 	if (target.bot && target != bot.user)
 		return message.reply("Même s'ils sont lourds, les bots sont incertains ma gueule (sauf moi bien sûr, t'as cru j'étais qui?)");

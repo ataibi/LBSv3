@@ -102,5 +102,5 @@ bot.on("message", async message => {
 
 });
 
-//bot.login(config.testoken);
-bot.login(config.token);
+bot.login(config.testoken);
+// bot.login(config.token);
