@@ -20,7 +20,7 @@ module.exports = {
 addXP: function (message, min, max, cmd)
 	   {
 		   let experience = Math.floor(Math.random() * (max - min)) + min;
-		   let gs = message.guild.roles.find("name", "LesGarsSûrs");
+		   let gs = message.guild.roles.find(role => role.name === "LesGarsSûrs");
 		   if (gs)
 		   {
 			   gs.members.forEach(gmember =>

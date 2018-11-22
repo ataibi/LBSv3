@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 
 module.exports.run = async (bot, message, args) => {
-  let pls = bot.emojis.find("name", "pls");
+  let pls = bot.emojis.find(emoji => emoji.name === "pls");
   let i = 0;
   let msg = "";
   message.mentions.users.forEach(user => {

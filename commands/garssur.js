@@ -4,7 +4,7 @@ module.exports.run = async (bot, message, args) => {
   let i = 0;
   let me=0;
   let msg = "";
-  let gs = message.guild.roles.find('name', "LesGarsSûrs");
+  let gs = message.guild.roles.find(role => role.name === "LesGarsSûrs");
   if (!gs)
     return message.channel.send("Pas de role appelé \"LesGarsSûrs\" sur ce serveur, vous etes vraiment incertains !");
   gs.members.forEach(gmember => {
