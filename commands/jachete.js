@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const Discord = require("discord.js");
 const mysql = require("mysql");
 const config = require("../config.json");
@@ -54,12 +55,12 @@ module.exports.run = async (bot, message, args) => {
 			con.query(`SELECT * FROM certithunes WHERE id = '${author.id}' AND guild = '${message.guild.id}'`, (err, row) =>
 					{
 					if (err)
-					console.error(error);
+						console.error(err);
 					if (!row[0])
 					certithunes = 0;
 					else
 					certithunes = row[0].amount;
-					itemId = args[0];
+					let itemId = args[0];
 					if (stock[itemId] === undefined)
 					{
 					return (message.reply("C'est invalide ce que tu me dis"));
@@ -86,8 +87,7 @@ module.exports.run = async (bot, message, args) => {
 								mentionable: 0
 							})
 								.then(role => {
-									let rolePosition = -2;
-									message.guild.roles.forEach(role => rolePosition++);
+									let rolePosition = message.guild.roles.size - 2;
 									role.setPosition(rolePosition);
 									message.member.addRole(role);
 									setTimeout(() => role.delete("timeout"), 7 * 24 * 3600 * 1000);
@@ -140,7 +140,7 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-name: 'jachete',
-	  description: 'Tu veux acheter un bail ?',
-	  examples: 'stp jachete'
+	name: 'jachete',
+	description: 'Tu veux acheter un bail ?',
+	examples: 'stp jachete'
 }

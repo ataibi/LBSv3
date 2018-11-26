@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const Discord = require("discord.js");
 const mysql = require("mysql");
 const config = require("../config.json");
@@ -11,23 +12,9 @@ var con = mysql.createConnection({
 
 con.connect(err => {
 		if (err)
-		throw err;
+			throw err;
 		console.log("Connected to database.");
 		});
-
-function cleanDate(date) {
-	var monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
-	var day = date.getDate();
-	var monthIndex = date.getMonth();
-	var hours = date.getHours();
-	var minutes = date.getMinutes();
-	if (hours < 10)
-		hours = '0' + hours;
-	if (minutes < 10)
-		minutes = '0' + minutes;
-	return day + ' ' + monthNames[monthIndex] + ' à ' + hours+'h'+minutes;
-}
-
 
 module.exports.run = async (bot, message, args) => {
 	let xp;
@@ -55,11 +42,12 @@ module.exports.run = async (bot, message, args) => {
 			thunes = parseFloat(parseFloat(thunes) * 2).toFixed(2);
 			else
 				console.log("regular day, no certithune bonus");
-			timeNow = parseInt(Date.now());
+			let timeNow = parseInt(Date.now());
 
 			con.query(`SELECT * FROM certithunes WHERE id = '${message.author.id}' AND guild = '${message.guild.id}'`, (err, rows) =>
 					{
 					let msg ="";
+					let sql = "";
 					if (err)
 					throw err;
 					if (!rows[0])
@@ -69,7 +57,7 @@ module.exports.run = async (bot, message, args) => {
 					}
 					else
 					{
-					cooldown = new Date(parseInt(rows[0].lastCollected));
+					let cooldown = new Date(parseInt(rows[0].lastCollected));
 					let total = parseFloat(parseFloat(rows[0].amount) + parseFloat(thunes));
 					if (nowDate.setHours(0,0,0,0) == cooldown.setHours(0,0,0,0))
 					{
@@ -103,7 +91,7 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-name: 'certithune',
-	  description: 'récupere ton pécule journalier maggle, faut bien se faire des certithunes',
-	  examples: 'stp certithune'
+	name: 'certithune',
+	description: 'récupere ton pécule journalier maggle, faut bien se faire des certithunes',
+	examples: 'stp certithune'
 }

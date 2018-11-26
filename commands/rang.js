@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 
 module.exports.run = async (bot, message, args) => {
   let level = 1;
-  xpPool = {};
+  let xpPool = {};
   xpPool[1] = 1234;
   while (level < 30)
   {

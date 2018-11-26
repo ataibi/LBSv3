@@ -63,5 +63,7 @@ typings/
 # images
 images/
 
-#config files
-#config.json
+#custom config
+config.json
+.eslintrc.js
+.vscode/

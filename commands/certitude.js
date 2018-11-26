@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const Discord = require("discord.js");
 const mysql = require("mysql");
 const config = require("../config.json");
@@ -15,12 +16,22 @@ con.connect(err => {
 		console.log("Connected to database.");
 		});
 
+	function formatDate(date) {
+		var day = date.getDate();
+		var monthIndex = date.getMonth();
+		var year = date.getFullYear();
+		return day + '/' + (++monthIndex) + '/' + year;
+	}
+
 module.exports.run = async (bot, message, args) => {
 	let cleanArg = 0;
 	if (args[0] != undefined)
 		cleanArg = args[0].replace(/\D/g,'');
 	let target = (cleanArg != 0 && message.guild.members.find(member => member.id === cleanArg) != undefined) ? message.guild.members.find(member => member.id === cleanArg).user : message.author;
 
+	let color;
+	let rank;
+	let prestige;
 	if (target.bot && target != bot.user)
 		return message.reply("Même s'ils sont lourds, les bots sont incertains ma gueule (sauf moi bien sûr, t'as cru j'étais qui?)");
 	else if (target == bot.user)
@@ -43,7 +54,7 @@ module.exports.run = async (bot, message, args) => {
 			if (!rows[0])
 			return message.channel.send(target + " n'a aucune certitude.");
 
-
+			let thunes;
 			let xp = rows[0].xp;
 			let level = 1;
 			let xpPool = 1234;
@@ -54,11 +65,6 @@ module.exports.run = async (bot, message, args) => {
 			xpPool = xpPool * 1.5;
 			}
 
-
-
-			let color;
-			let rank;
-			let prestige;
 			if (level < 10)
 			{
 				color = "#FFC71E";
@@ -126,12 +132,6 @@ module.exports.run = async (bot, message, args) => {
 					{
 					if (rows.length > 0)
 					{
-						function formatDate(date) {
-  					var day = date.getDate();
-  					var monthIndex = date.getMonth();
-  					var year = date.getFullYear();
-  					return day + '/' + (++monthIndex) + '/' + year;
-					}
 						if (new Date(parseInt(rows[0].expiresOn)) > (new Date()))
 							xpCard.addField("Bonus de certitude : ", `Jusqu'au ${formatDate(new Date(parseInt(rows[0].expiresOn)))}`)
 						else
@@ -148,7 +148,7 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-name: 'certitude',
-	  description: 'Ouais parce que mon dev savait pas quoi faire alors il a mis un systeme d\'experience en place',
-	  examples: 'stp certitude, stp certitude @user#1234'
+	name: 'certitude',
+	description: 'Ouais parce que mon dev savait pas quoi faire alors il a mis un systeme d\'experience en place',
+	examples: 'stp certitude, stp certitude @user#1234'
 }

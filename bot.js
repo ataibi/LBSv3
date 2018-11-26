@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const config = require("./config.json");
 const Discord = require("discord.js");
 const utilities = require("./utilities.js");
@@ -17,7 +18,7 @@ fs.readdir("./commands", (err, files) => {
     return;
   }
 
-  jsfile.forEach((f, i) => {
+  jsfile.forEach((f) => {
     let props = require(`./commands/${f}`);
     console.log(f + " loaded");
     bot.commands.set(props.help.name, props);
@@ -46,8 +47,8 @@ bot.on("ready", async () => {
 
 function botActivity (bot)
 {
-  games = Array("la marelle sur l'autoroute", "la roulette russe", "touche pipi avec Tatsumaki");
-  bActivity = Math.floor(Math.random() * 3);
+  let games = Array("la marelle sur l'autoroute", "la roulette russe", "touche pipi avec Tatsumaki");
+  let bActivity = Math.floor(Math.random() * 3);
   if (botActive == 1)
   {
     bot.user.setActivity(null);
@@ -83,7 +84,7 @@ bot.on("message", async message => {
       identified = 1;
     i++;
   });
-  message.content.split(" ").forEach(word => words++);
+  words = messageArray.length;
   if (i == 1 && identified == 1 && words == 1)
       return message.reply('Oui ?');
   else if (words == 1 && messageArray[0] == prefix)

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const Discord = require("discord.js");
 const mysql = require("mysql");
 const config = require("../config.json");
@@ -31,7 +32,7 @@ module.exports.run = async (bot, message, args) => {
     return message.reply("j'crois que t'as pas compris ce que veut dire \"donner\", tu peux pas te donner quelque chose..");
   con.query(`SELECT * FROM certithunes WHERE id = '${donor}' AND guild = '${message.guild.id}'`, (mError, donorRows) => {
     if (mError)
-      throw err;
+      throw mError;
     if (!donorRows[0] || parseFloat(donorRows[0].amount) < parseFloat(args[1]))
       return message.reply("t'as pas assez de thunes.. va plutot faire la manche sale clodo");
     con.query(`SELECT * FROM certithunes WHERE id = '${target.id}' AND guild = '${message.guild.id}'`, (err, targetRows) => {
@@ -47,13 +48,17 @@ module.exports.run = async (bot, message, args) => {
         total = parseFloat(parseFloat(targetRows[0].amount) + parseFloat(args[1]));
         sql = `UPDATE certithunes SET amount = ${total} WHERE id = '${target.id}' AND guild = '${message.guild.id}'`;
       }
-      sql2 = `UPDATE certithunes SET amount = ${parseFloat(parseFloat(donorRows[0].amount) - parseFloat(args[1]))} WHERE id = '${donor}' AND guild = '${message.guild.id}'`;
+      let sql2 = `UPDATE certithunes SET amount = ${parseFloat(parseFloat(donorRows[0].amount) - parseFloat(args[1]))} WHERE id = '${donor}' AND guild = '${message.guild.id}'`;
       con.query(sql, (e, giving) => {
         if (e)
           throw e;
+        else
+          console.log(giving);
         con.query(sql2, (trerror, transfert) => {
           if (trerror)
             throw trerror;
+          else
+            console.log(transfert);
         });
         let currency = "certithunes";
         if (parseFloat(args[1]) < 1)
