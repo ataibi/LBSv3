@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const Discord = require("discord.js");
 const config = require("../config.json");
 const imageSearch = require('image-search-google');
