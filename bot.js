@@ -29,11 +29,11 @@ function talk(message)
   {
   let rand = Math.floor(Math.random() * 100) + 1;
   console.log(rand);
-  let phrases = Array('LOURD!', 'oui bien sûr', 'non..', 'suce moi ma poule', 'j\'avous', 'reste tranquille ma gueule', 'c\'est pas drole.', 'YEET !');
+  let phrases = ['LOURD!', 'Oui bien sûr', 'Non..', `suce moi ${message.author.username}`, 'J\'avous', `Eh ${message.author.username}, reste tranquille ma gueule`, 'C\'est pas drole.', 'YEET !'];
   if (rand <= 3)
   {
     utilities.addXP(message, 30, 55, 0);
-    message.reply(phrases[Math.floor(Math.random()*phrases.length)]);
+    message.channel.send(phrases[Math.floor(Math.random()*phrases.length)]);
   }
 }
 var botActive = 0;
@@ -103,5 +103,5 @@ bot.on("message", async message => {
 
 });
 
-bot.login(config.testoken);
-// bot.login(config.token);
+//bot.login(config.testoken);
+bot.login(config.token);

@@ -4,7 +4,7 @@ module.exports.run = async (bot, message, args) => {
   let botembed = new Discord.RichEmbed()
   .setDescription("Je suis le début et la fin, l'alpha et l'oméga, la certitude et l'incertitude, je suis tout et je ne suis rien, je suis... \n**LeBotSûr, version 2.0**")
   .setColor("#8D0F0B")
-  .setThumbnail("../images/tki.png");
+  .setThumbnail("http://sc.letscode.pw/tki.png");
 
   return message.channel.send(botembed);
 }
