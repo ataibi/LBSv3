@@ -4,20 +4,23 @@ module.exports.run = async (bot, message, args) => {
   let level = 1;
   let xpPool = {};
   xpPool[1] = 1234;
+  let totalXp = {};
+  totalXp[1] = 1234;
   while (level < 30)
   {
     level++;
     xpPool[level] = xpPool[level - 1] * 1.5;
+	totalXp[level] = xpPool[level] + totalXp[level - 1]
   }
   let rangCard = new Discord.RichEmbed()
   .setTitle("__**LES RANGS DE LA CERTITUDE**__")
   .setColor("0CA170")
-  .addField("__Judas :__", `De **0** à **${parseInt(xpPool[6]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}** points certitude.`)
-  .addField("__Gars Patibulaire :__", `De **${parseInt(xpPool[6]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}** à **${parseInt(xpPool[11]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}** points de certitude.`)
-  .addField("__Gars Perfide :__", `De **${parseInt(xpPool[11]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}** à **${parseInt(xpPool[16]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}** points de certitude.`)
-  .addField("__Gars Incertain :__", `De **${parseInt(xpPool[16]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}** à **${parseInt(xpPool[21]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}** points de certitude.`)
-  .addField("__Gars Solide :__", `De **${parseInt(xpPool[21]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}** à **${parseInt(xpPool[26]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}** points de certitude.`)
-  .addField("__Gars Sûr :__", `À partir de **${parseInt(xpPool[26]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}** points de certitude.`);
+  .addField("__Judas :__", `De **0** à **${parseInt(totalXp[5]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}** points certitude.`)
+  .addField("__Gars Patibulaire :__", `De **${parseInt(totalXp[5]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}** à **${parseInt(totalXp[10]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}** points de certitude.`)
+  .addField("__Gars Perfide :__", `De **${parseInt(totalXp[10]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}** à **${parseInt(totalXp[15]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}** points de certitude.`)
+  .addField("__Gars Incertain :__", `De **${parseInt(totalXp[15]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}** à **${parseInt(totalXp[20]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}** points de certitude.`)
+  .addField("__Gars Solide :__", `De **${parseInt(totalXp[20]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}** à **${parseInt(totalXp[25]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}** points de certitude.`)
+  .addField("__Gars Sûr :__", `À partir de **${parseInt(totalXp[25]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}** points de certitude.`);
   message.channel.send(rangCard);
 }
 
