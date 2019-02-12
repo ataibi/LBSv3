@@ -35,6 +35,8 @@ module.exports.run = async (bot, message, args) => {
       throw mError;
     if (!donorRows[0] || parseFloat(donorRows[0].amount) < parseFloat(args[1]))
       return message.reply("t'as pas assez de thunes.. va plutot faire la manche sale clodo");
+    if (parseFloat(args[1]) < 0)
+      return message.reply("mdr t'es un pd on peut pas prendre de l'argent à quelqu'un comme ça, on est dans la certitude ici, pas dans une société capitaliste");
     con.query(`SELECT * FROM certithunes WHERE id = '${target.id}' AND guild = '${message.guild.id}'`, (err, targetRows) => {
       if (err)
         throw err;

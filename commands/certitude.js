@@ -125,7 +125,7 @@ module.exports.run = async (bot, message, args) => {
 					.setTitle(target.username)
 					.addField("Points de certitude :", rows[0].xp)
 					.addField("Points requis pour le rang suivant :", Math.floor(xpPool - xp))
-					.addField("Rang :", rank+prestige)
+					.addField("Rang :", `${rank} ${prestige} (niveau ${level})`)
 					.addField("Certithunes :", thunes)
 					.setColor(color);
 				con.query(`SELECT * FROM shop WHERE userID = '${target.id}' AND guildID = '${message.guild.id}' AND itemID = '1'`, (err, rows) =>
