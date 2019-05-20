@@ -29,16 +29,29 @@ function talk(message)
   {
   let rand = Math.floor(Math.random() * 100) + 1;
   console.log(rand);
-  let blurry = message.client.emojis.get('488587058944802837');
+  let emoji = bot.emojis.random().id;
   let phrases = ['LOURD!', 'Oui bien sûr', 'Non..', `suce moi ${message.author.username}`, 'J\'avous', `Eh ${message.author.username}, reste tranquille ma gueule`, 'C\'est pas drole.', 'YEET !'];
-  if (blurry)
-    phrases.push(`${blurry}`);
+  if (emoji)
+    phrases.push(`${bot.emojis.get(emoji)}`);
   if (rand <= 3)
   {
-    utilities.addXP(message, 30, 55, 0);
+    utilities.addXP(message, 20, 45, 0);
     message.channel.send(phrases[Math.floor(Math.random()*phrases.length)]);
   }
 }
+
+function addReaction(message)
+  {
+    let rand = Math.floor(Math.random() * 100) + 1;
+    console.log(`Random for reaction : ${rand}`);
+    let emoji = bot.emojis.random().id;
+    if (rand >= 97)
+    {
+      utilities.addXP(message, 30, 40, 0);
+      message.react(bot.emojis.get(emoji))
+    }
+  }
+
 var botActive = 0;
 bot.on("ready", async () => {
   console.log(`logged in as ${bot.user.username}`);
@@ -75,7 +88,7 @@ bot.on("message", async message => {
   let args = messageArray.slice(2);
 
   talk(message);
-
+  addReaction(message);
   if (messageArray[0].toLowerCase() != prefix && messageArray[0] != `<@${bot.user.id}>`)
     return;
 
@@ -106,5 +119,5 @@ bot.on("message", async message => {
 
 });
 
-//bot.login(config.testoken);
+// bot.login(config.testoken);
 bot.login(config.token);
