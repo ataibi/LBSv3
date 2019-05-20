@@ -65,7 +65,7 @@ module.exports.run = async (bot, message, args) => {
 			xpPool = xpPool * 1.5;
 			}
 
-			if (level < 10)
+			if (level <= 10)
 			{
 				color = "#FFC71E";
 				if (level <= 5)
@@ -73,7 +73,7 @@ module.exports.run = async (bot, message, args) => {
 				else
 					rank = "Gars Patibulaire"
 			}
-			else if (level >= 10 && level < 20)
+			else if (level > 10 && level <= 20)
 			{
 				color = "E82C0C";
 				if (level <= 15)
@@ -81,7 +81,7 @@ module.exports.run = async (bot, message, args) => {
 				else
 					rank = "Gars Incertain";
 			}
-			else if (level >= 20)
+			else if (level > 20)
 			{
 				color = "AD001D";
 				if (level <= 25)

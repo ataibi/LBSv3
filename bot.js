@@ -29,7 +29,10 @@ function talk(message)
   {
   let rand = Math.floor(Math.random() * 100) + 1;
   console.log(rand);
+  let blurry = message.client.emojis.get('488587058944802837');
   let phrases = ['LOURD!', 'Oui bien sûr', 'Non..', `suce moi ${message.author.username}`, 'J\'avous', `Eh ${message.author.username}, reste tranquille ma gueule`, 'C\'est pas drole.', 'YEET !'];
+  if (blurry)
+    phrases.push(`${blurry}`);
   if (rand <= 3)
   {
     utilities.addXP(message, 30, 55, 0);

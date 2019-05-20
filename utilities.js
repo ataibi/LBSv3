@@ -84,7 +84,7 @@ addXP: function (message, min, max, cmd)
                             let color;
                             let rank;
                             let prestige;
-                            if (level < 10)
+                            if (level <= 10)
                             {
                                 color = "#FFC71E";
                                 if (level <= 5)
@@ -92,7 +92,7 @@ addXP: function (message, min, max, cmd)
                                 else
                                 rank = "Gars Patibulaire"
                             }
-                            else if (level >= 10 && level < 20)
+                            else if (level > 10 && level <= 20)
                             {
                                 color = "E82C0C";
                                 if (level <= 15)
@@ -100,7 +100,7 @@ addXP: function (message, min, max, cmd)
                                 else
                                     rank = "Gars Incertain";
                             }
-                            else if (level >= 20)
+                            else if (level > 20)
                             {
                                 color = "AD001D";
                                 if (level <= 25)
