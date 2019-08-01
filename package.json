@@ -14,6 +14,7 @@
     "image-search-google": "^1.0.10",
     "mysql": "^2.16.0",
     "nodemon": "^1.19.0",
+    "pornsearch": "^2.4.3",
     "youtube-search": "^1.1.3"
   }
 }
