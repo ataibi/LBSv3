@@ -29,10 +29,10 @@ function talk(message)
   {
   let rand = Math.floor(Math.random() * 100) + 1;
   console.log(rand);
-  let emoji = bot.emojis.random().id;
+  let emoji = bot.emojis.random();
   let phrases = ['LOURD!', 'Oui bien sûr', 'Non..', `suce moi ${message.author.username}`, 'J\'avous', `Eh ${message.author.username}, reste tranquille ma gueule`, 'C\'est pas drole.', 'YEET !'];
   if (emoji)
-    phrases.push(`${bot.emojis.get(emoji)}`);
+    phrases.push(`${emoji}`);
   if (rand <= 3)
   {
     utilities.addXP(message, 20, 45, 0);
@@ -42,10 +42,10 @@ function talk(message)
 
 function addReaction(message)
   {
-    let rand = Math.floor(Math.random() * 100) + 1;
+    let rand = Math.floor(Math.random() * 1000) + 1;
     console.log(`Random for reaction : ${rand}`);
     let emoji = bot.emojis.random().id;
-    if (rand >= 97)
+    if (rand >= 990)
     {
       utilities.addXP(message, 30, 40, 0);
       message.react(bot.emojis.get(emoji))
