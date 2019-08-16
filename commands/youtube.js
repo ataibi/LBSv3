@@ -5,7 +5,7 @@ const search = require('youtube-search')
 
 module.exports.run = async (bot, message, args) => {
   var options = {
-    maxResults: 100,
+    maxResults: 50,
     key: config.googleAPI,
     type: 'video'
   }
@@ -13,7 +13,7 @@ module.exports.run = async (bot, message, args) => {
   let query = ''
   if (!isNaN(args[0]) && args[1]) {
     index = args[0]
-    if (index <= 0 || index >= 100) { index = 1 }
+    if (index <= 0 || index >= 50) { index = 1 }
     query = args.slice(1).join(' ')
   } else { query = args.join(' ') }
   index = Math.floor(index)
