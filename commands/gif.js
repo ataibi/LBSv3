@@ -8,11 +8,12 @@ module.exports.run = async (bot, message, args) => {
   let query = ''
   if (!isNaN(args[0]) && args[1]) {
     index = args[0]
-    if (index <= 0 || index >= 100) { index = 0 }
+    if (index <= 0 || index >= 100) { index = 1 }
     query = args.slice(1).join(' ')
-  } else { index = 0 }
+  } else { query = args.join(' ') }
+  index = Math.floor(index)
   const answer = `voilà ce que me donne giphy pour '${query}'\n`
-  giphy.search({ q: query, limit: 2 }, (err, res) => {
+  giphy.search({ q: query, limit: 100 }, (err, res) => {
     if (err) { throw err }
     const gif = res.data[index]
     return message.reply(answer + gif.url)

@@ -5,21 +5,25 @@ const search = require('youtube-search')
 
 module.exports.run = async (bot, message, args) => {
   var options = {
-    maxResults: 1,
+    maxResults: 10,
     key: config.googleAPI,
     type: 'video'
   }
-  let index = 0
+  let index = 1
   let query = ''
   if (!isNaN(args[0]) && args[1]) {
     index = args[0]
-    if (index <= 0 || index >= 100) { index = 0 }
+    if (index <= 0 || index >= 10) { index = 1 }
     query = args.slice(1).join(' ')
-  } else { index = 0 }
+  } else { query = args.join(' ') }
+  index = Math.floor(index)
   const answer = `Youtube me donne ça pour '${query}'\n`
   search(query, options, (err, res) => {
-    if (err) { throw err }
-    const video = res[index]
+    if (err) {
+      console.log(`index = ${index}, response = ${res}`)
+      console.error(err)
+    }
+    const video = res[index - 1]
     return message.reply(answer + video.link)
   })
 }
