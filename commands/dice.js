@@ -1,8 +1,9 @@
-const Discord = require("discord.js");
+// eslint-disable-next-line no-unused-vars
+const Discord = require('discord.js')
 
 module.exports.run = async (bot, message, args) => {
-  let rand = Math.floor(Math.random() * 6) + 1;
-  return message.reply(rand);
+  const rand = Math.floor(Math.random() * 6) + 1
+  return message.reply(rand)
 }
 
 module.exports.help = {

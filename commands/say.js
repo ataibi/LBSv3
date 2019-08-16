@@ -1,16 +1,15 @@
 /* eslint-disable no-console */
-const Discord = require("discord.js");
+// eslint-disable-next-line no-unused-vars
+const Discord = require('discord.js')
 
 module.exports.run = async (bot, message, args) => {
-  if (!message.member.roles.find(role => role.name === "LesGarsSûrs")&& message.author.id != bot.user.id)
-    return message.reply("mdr t'as cru j'allais répéter ce que tu voulais ? Si t'es pas un gars sûr tu vaux **rien** pour moi.");
-  let botmessage = args.join(" ");
-  if (!args[0])
-    return message.reply("tu veux me faire dire quelque chose mais tu me donnes rien à dire ? wtf dude");
+  if (!message.member.roles.find(role => role.name === 'LesGarsSûrs') && message.author.id !== bot.user.id) { return message.reply("mdr t'as cru j'allais répéter ce que tu voulais ? Si t'es pas un gars sûr tu vaux **rien** pour moi.") }
+  const botmessage = args.join(' ')
+  if (!args[0]) { return message.reply('tu veux me faire dire quelque chose mais tu me donnes rien à dire ? wtf dude') }
   message.delete()
-  .then(msg => console.log(`message deleted :  ${msg.cleanContent} (author : ${message.author.username}`))
-  .catch(console.error);
-  return message.channel.send(botmessage);
+    .then(msg => console.log(`message deleted :  ${msg.cleanContent} (author : ${message.author.username}`))
+    .catch(console.error)
+  return message.channel.send(botmessage)
 }
 
 module.exports.help = {

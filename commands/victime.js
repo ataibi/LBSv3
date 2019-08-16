@@ -1,18 +1,17 @@
-const Discord = require("discord.js");
+// eslint-disable-next-line no-unused-vars
+const Discord = require('discord.js')
 
 module.exports.run = async (bot, message, args) => {
-  let pls = bot.emojis.find(emoji => emoji.name === "pls");
-  let i = 0;
-  let msg = "";
+  const pls = bot.emojis.find(emoji => emoji.name === 'pls')
+  let i = 0
+  let msg = ''
   message.mentions.users.forEach(user => {
-    if (i > 0)
-      msg += ", ";
-    msg += "<@" + user.id + ">";
-    i++;
-  });
-  if (i > 0)
-    msg += ", ";
-  message.channel.send(msg+"en ce moment <:pls:"+pls.id+">\nça va oklm la PLS ?");
+    if (i > 0) { msg += ', ' }
+    msg += '<@' + user.id + '>'
+    i++
+  })
+  if (i > 0) { msg += ', ' }
+  message.channel.send(msg + 'en ce moment <:pls:' + pls.id + '>\nça va oklm la PLS ?')
 }
 
 module.exports.help = {

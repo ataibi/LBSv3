@@ -1,26 +1,27 @@
-const config = require("../config.json");
-const Discord = require("discord.js");
-const search = require("youtube-search");
+const config = require('../config.json')
+// eslint-disable-next-line no-unused-vars
+const Discord = require('discord.js')
+const search = require('youtube-search')
 
 module.exports.run = async (bot, message, args) => {
   var options = {
     maxResults: 1,
     key: config.googleAPI,
     type: 'video'
-  };
-  let query = "";
-  if (!isNaN(args[0]) && args[1])
-      query = args.slice(1).join(" ");
-  else
-    query = args.join(" ");
-  let answer = `Le premier resultat sur youtube pour '${query}' c'est\n`;
-  search(query, options, (err, res) =>
-  {
-    if (err)
-      throw err;
-    let video = res[0];
+  }
+  let index = 0
+  let query = ''
+  if (!isNaN(args[0]) && args[1]) {
+    index = args[0]
+    if (index <= 0 || index >= 100) { index = 0 }
+    query = args.slice(1).join(' ')
+  } else { index = 0 }
+  const answer = `Youtube me donne ça pour '${query}'\n`
+  search(query, options, (err, res) => {
+    if (err) { throw err }
+    const video = res[index]
     return message.reply(answer + video.link)
-  });
+  })
 }
 
 module.exports.help = {

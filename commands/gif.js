@@ -1,21 +1,22 @@
-const Discord = require("discord.js");
-const config = require("../config.json");
-const giphy = require("giphy-api")(config.giphyAPI);
+// eslint-disable-next-line no-unused-vars
+const Discord = require('discord.js')
+const config = require('../config.json')
+const giphy = require('giphy-api')(config.giphyAPI)
 
 module.exports.run = async (bot, message, args) => {
-  let query = "";
-  if (!isNaN(args[0]) && args[1])
-      query = args.slice(1).join(" ");
-  else
-    query = args.join(" ");
-  let answer = `voilà ce que me donne giphy resultats pour '${query}'\n`;
-  giphy.search({q: query, limit: 2}, (err, res) =>
-  {
-    if (err)
-      throw err;
-    let gif = res.data[0];
+  let index = 1
+  let query = ''
+  if (!isNaN(args[0]) && args[1]) {
+    index = args[0]
+    if (index <= 0 || index >= 100) { index = 0 }
+    query = args.slice(1).join(' ')
+  } else { index = 0 }
+  const answer = `voilà ce que me donne giphy pour '${query}'\n`
+  giphy.search({ q: query, limit: 2 }, (err, res) => {
+    if (err) { throw err }
+    const gif = res.data[index]
     return message.reply(answer + gif.url)
-  });
+  })
 }
 
 module.exports.help = {

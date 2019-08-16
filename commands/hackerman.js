@@ -1,9 +1,10 @@
-const Discord = require("discord.js");
+// eslint-disable-next-line no-unused-vars
+const Discord = require('discord.js')
 
 module.exports.run = async (bot, message, args) => {
   return message.channel.send({
-    file: "./images/hackerman.png"
-  });
+    file: './images/hackerman.png'
+  })
 }
 
 module.exports.help = {

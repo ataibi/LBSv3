@@ -1,19 +1,19 @@
-const Discord = require("discord.js");
-const Pornsearch = require('pornsearch');
+const Discord = require('discord.js')
+const Pornsearch = require('pornsearch')
 
 module.exports.run = async (bot, message, args) => {
-  const Searcher = new Pornsearch(args, driver = 'pornhub');
+  const Searcher = new Pornsearch(args, 'pornhub')
   Searcher.videos()
     .then(videos => {
-      let lourdeVideo = new Discord.RichEmbed()
+      const lourdeVideo = new Discord.RichEmbed()
         .setTitle(videos[1].title)
         .setThumbnail(videos[1].thumb)
         .addField('Duration :', videos[1].duration)
         .setURL(videos[1].url)
-        .setColor('#FF9900');
-      message.channel.send(lourdeVideo);
-      console.log(videos);
-    });
+        .setColor('#FF9900')
+      message.channel.send(lourdeVideo)
+      console.log(videos)
+    })
 }
 
 module.exports.help = {
