@@ -16,7 +16,10 @@ module.exports.run = async (bot, message, args) => {
   giphy.search({ q: query, limit: 100 }, (err, res) => {
     if (err) { throw err }
     const gif = res.data[index]
-    return message.reply(answer + gif.url)
+    const response = answer + gif.url
+    message.channel.send(response)
+    .then(sentAnswer => { feedback.isResultAccurate(bot, sentAnswer, message.author) })
+    .catch(console.error)
   })
 }
 

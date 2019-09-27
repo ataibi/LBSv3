@@ -24,7 +24,10 @@ module.exports.run = async (bot, message, args) => {
   engine.search(query, { page: pageNumber })
     .then(images => {
       console.log(query + ' ' + pageNumber + ' ' + index)
-      return message.reply(`Google Images me donne ça pour '${query}'\n${images[index - 1].url}`)
+      const response = `Google Images me donne ça pour '${query}'\n${images[index - 1].url}`
+      message.channel.send(response)
+      .then(sentAnswer => { feedback.isResultAccurate(bot, sentAnswer, message.author) })
+      .catch(console.error)
     }).catch(e => { console.log(e) })
 }
 

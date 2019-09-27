@@ -5,13 +5,15 @@ module.exports.run = async (bot, message, args) => {
   const Searcher = new Pornsearch(args, 'pornhub')
   Searcher.videos()
     .then(videos => {
-      const lourdeVideo = new Discord.RichEmbed()
+      const response = new Discord.RichEmbed()
         .setTitle(videos[1].title)
         .setThumbnail(videos[1].thumb)
         .addField('Duration :', videos[1].duration)
         .setURL(videos[1].url)
         .setColor('#FF9900')
-      message.channel.send(lourdeVideo)
+      message.channel.send(response)
+      .then(sentAnswer => { feedback.isResultAccurate(bot, sentAnswer, message.author) })
+      .catch(console.error)
       console.log(videos[1])
     })
 }
