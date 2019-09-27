@@ -25,9 +25,10 @@ module.exports.run = async (bot, message, args) => {
       console.error(err)
     }
     const video = res[index - 1]
-    answer += video.link
-    message.channel.send(answer)
-    isResultAccurate(answer)
+    const response = answer + video.link
+    message.channel.send(response)
+    .then(sentAnswer => { feedback.isResultAccurate(bot, sentAnswer, message.author) })
+    .catch(console.error)
   })
 }
 

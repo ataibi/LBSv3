@@ -96,5 +96,5 @@ bot.on('message', async message => {
   } else { return message.reply("hmm... Je comprends absolument rien à ce que tu veux. Pour savoir quoi me demander, fais un petit 'stp pls' (t'es qu'une merde <3)") }
 })
 
-// bot.login(config.testoken)
-bot.login(config.token)
+bot.login(config.testoken)
+// bot.login(config.token)
