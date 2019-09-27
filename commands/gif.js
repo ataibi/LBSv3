@@ -2,6 +2,7 @@
 const Discord = require('discord.js')
 const config = require('../config.json')
 const giphy = require('giphy-api')(config.giphyAPI)
+const feedback = require('../feedback.js')
 
 module.exports.run = async (bot, message, args) => {
   let index = 1

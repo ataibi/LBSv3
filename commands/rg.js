@@ -3,6 +3,7 @@
 const Discord = require('discord.js')
 const config = require('../config.json')
 const ImageSearch = require('image-search-google')
+const feedback = require('../feedback.js')
 
 const engine = new ImageSearch(config.engineID, config.googleAPI)
 
