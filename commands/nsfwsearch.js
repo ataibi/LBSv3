@@ -12,7 +12,7 @@ module.exports.run = async (bot, message, args) => {
         .setURL(videos[1].url)
         .setColor('#FF9900')
       message.channel.send(lourdeVideo)
-      console.log(videos)
+      console.log(videos[1])
     })
 }
 

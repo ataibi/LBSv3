@@ -10,6 +10,47 @@ var con = mysql.createConnection({
   database: config.dbName
 })
 
+const levelUpCard = (baseXP, addedXP, xpCap, newLevel, message) => {
+  let color
+  let rank
+  let prestige
+  if (newLevel <= 10) {
+    color = '#FFC71E'
+    if (newLevel <= 5) { rank = 'Judas' } else { rank = 'Gars Patibulaire' }
+  } else if (newLevel > 10 && newLevel <= 20) {
+    color = 'E82C0C'
+    if (newLevel <= 15) { rank = 'Gars Perfide' } else { rank = 'Gars Incertain' }
+  } else if (newLevel > 20) {
+    color = 'AD001D'
+    if (newLevel <= 25) { rank = 'Gars Solide' } else { rank = 'Gars Sûr' }
+  }
+  if (newLevel > 30) { newLevel = 30 }
+  switch (newLevel % 5) {
+    case 0:
+      prestige = ' **V**'
+      break
+    case 1:
+      prestige = ' **I**'
+      break
+    case 2:
+      prestige = ' **II**'
+      break
+    case 3:
+      prestige = ' **III**'
+      break
+    case 4:
+      prestige = ' **IV**'
+      break
+    default:
+      prestige = ''
+  }
+  return new Discord.RichEmbed()
+    .setThumbnail(message.author.avatar)
+    .setTitle(`${message.author.username} vient de gagner en certitude !`)
+    .addField('Rang : ', rank + prestige)
+    .setColor(color)
+}
+
 con.connect(err => {
   if (err) { throw err }
   console.log('Connected to database.')
@@ -57,47 +98,7 @@ module.exports = {
             levelCap = levelCap * 1.5
             level++
           }
-          if (Currentxp + experience >= levelCap) {
-            let color
-            let rank
-            let prestige
-            if (level <= 10) {
-              color = '#FFC71E'
-              if (level <= 5) { rank = 'Judas' } else { rank = 'Gars Patibulaire' }
-            } else if (level > 10 && level <= 20) {
-              color = 'E82C0C'
-              if (level <= 15) { rank = 'Gars Perfide' } else { rank = 'Gars Incertain' }
-            } else if (level > 20) {
-              color = 'AD001D'
-              if (level <= 25) { rank = 'Gars Solide' } else { rank = 'Gars Sûr' }
-            }
-            if (level > 30) { level = 30 }
-            switch (level % 5) {
-              case 0:
-                prestige = ' **V**'
-                break
-              case 1:
-                prestige = ' **I**'
-                break
-              case 2:
-                prestige = ' **II**'
-                break
-              case 3:
-                prestige = ' **III**'
-                break
-              case 4:
-                prestige = ' **IV**'
-                break
-              default:
-                prestige = ''
-            }
-            const levelUpCard = new Discord.RichEmbed()
-              .setThumbnail(message.author.avatar)
-              .setTitle(`${message.author.username} vient de gagner en certitude !`)
-              .addField('Rang : ', rank + prestige)
-              .setColor(color)
-            message.channel.send(levelUpCard)
-          }
+          if (Currentxp + experience >= levelCap) { message.channel.send(levelUpCard(Currentxp, experience, levelCap, level, message)) }
           if (level > 1) { experience = experience * (0.60 * level) }
           const total = rows[0].xp + experience
           console.log(`${message.author.username} gained ${experience}xp`)

@@ -2,6 +2,7 @@ const config = require('../config.json')
 // eslint-disable-next-line no-unused-vars
 const Discord = require('discord.js')
 const search = require('youtube-search')
+const feedback = require('../feedback.js')
 
 module.exports.run = async (bot, message, args) => {
   var options = {
@@ -24,7 +25,9 @@ module.exports.run = async (bot, message, args) => {
       console.error(err)
     }
     const video = res[index - 1]
-    return message.reply(answer + video.link)
+    answer += video.link
+    message.channel.send(answer)
+    isResultAccurate(answer)
   })
 }
 
