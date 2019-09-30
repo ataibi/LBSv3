@@ -1,15 +1,13 @@
 const Discord = require('discord.js')
 
 module.exports.run = async (bot, message, args) => {
-  let level = 1
-  const xpPool = {}
-  xpPool[1] = 1234
-  const totalXp = {}
-  totalXp[1] = 1234
-  while (level < 30) {
-    level++
-    xpPool[level] = xpPool[level - 1] * 1.5
-    totalXp[level] = xpPool[level] + totalXp[level - 1]
+    let level = 1
+    const totalXp = {}
+    totalXp[1] = 600
+  while (level < 31)
+  {
+      totalXp[level + 1] = Math.floor(((Math.exp(Math.log(level) * 0.5) * 1200) + (Math.exp(Math.log(level - 1) * 0.5) * 1200)) + totalXp[level])
+      level++;
   }
   const rangCard = new Discord.RichEmbed()
     .setTitle('__**LES RANGS DE LA CERTITUDE**__')

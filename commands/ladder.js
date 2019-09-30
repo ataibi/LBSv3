@@ -17,7 +17,7 @@ con.connect(err => {
 module.exports.run = async (bot, message, args) => {
   let maxNumber
   if (!(maxNumber = parseInt(args[0]))) { maxNumber = 24 }
-  con.query(`SELECT * FROM experience WHERE guild = ${message.guild.id} ORDER BY xp DESC`, (err, userList) => {
+  con.query(`SELECT * FROM users WHERE guild = ${message.guild.id} ORDER BY experience DESC`, (err, userList) => {
     if (err) console.log(err)
     if (userList[0] && userList.length > 1 && userList.length < 25) {
       const ladder = new Discord.RichEmbed()
@@ -26,9 +26,9 @@ module.exports.run = async (bot, message, args) => {
       let position = 0
       let user
       while (userList[position] && position < maxNumber) {
-        user = message.guild.members.find(userObject => userObject.id === userList[position].id)
+        user = message.guild.members.find(userObject => userObject.id === userList[position].userID)
         console.log({ position, user })
-        ladder.addField(`__**#${position + 1} : ${user ? user.displayName : "Perdu dans l'incertitude"}**__`, `_${userList[position].xp} points de certitude._`)
+        ladder.addField(`__**#${position + 1} : ${user ? user.displayName : "Perdu dans l'incertitude"}**__`, `_${userList[position].experience} points de certitude._`)
         position++
       }
       message.channel.send(ladder)

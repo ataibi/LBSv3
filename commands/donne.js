@@ -3,6 +3,7 @@
 const Discord = require('discord.js')
 const mysql = require('mysql')
 const config = require('../config.json')
+const Users = require('../users.js')
 
 var con = mysql.createConnection({
   host: config.dbHost,
@@ -11,43 +12,48 @@ var con = mysql.createConnection({
   database: config.dbName
 })
 
-con.connect(err => {
-  if (err) { throw err }
-  console.log('Connected to database.')
-})
-
 module.exports.run = async (bot, message, args) => {
-  const donor = message.author.id
   const target = message.mentions.users.first() || message.guild.members.get(args[0])
-  let sql
-  let total
+  let gift = parseFloat(args[1])
 
+  if (!gift) { return message.reply("faut donner un chiffre sale merde") }
   if (!target) { return message.reply("tu veux donner à qui ? j'ai pas compris..") }
   if (!args[1]) { return message.reply("tu sais que tu dois donner un montant aussi, j'suis pas devin.. J'en ai maaaaarre de vos conneries les gars !") }
   if (target.bot) { return message.reply("tu peux pas donner de certithunes aux bots. T'es teubé j'crois") }
   if (target === message.author) { return message.reply("j'crois que t'as pas compris ce que veut dire \"donner\", tu peux pas te donner quelque chose..") }
-  con.query(`SELECT * FROM certithunes WHERE id = '${donor}' AND guild = '${message.guild.id}'`, (mError, donorRows) => {
-    if (mError) { throw mError }
-    if (!donorRows[0] || parseFloat(donorRows[0].amount) < parseFloat(args[1])) { return message.reply("t'as pas assez de thunes.. va plutot faire la manche sale clodo") }
-    if (parseFloat(args[1]) < 0) { return message.reply("mdr t'es un pd on peut pas prendre de l'argent à quelqu'un comme ça, on est dans la certitude ici, pas dans une société capitaliste") }
-    con.query(`SELECT * FROM certithunes WHERE id = '${target.id}' AND guild = '${message.guild.id}'`, (err, targetRows) => {
-      if (err) { throw err }
-      if (!targetRows[0]) {
-        total = parseFloat(args[1])
-        sql = `INSERT INTO certithunes (id, amount, guild) values ('${target.id}', '${total}', '${message.guild.id}')`
-      } else {
-        total = parseFloat(parseFloat(targetRows[0].amount) + parseFloat(args[1]))
-        sql = `UPDATE certithunes SET amount = ${total} WHERE id = '${target.id}' AND guild = '${message.guild.id}'`
-      }
-      const sql2 = `UPDATE certithunes SET amount = ${parseFloat(parseFloat(donorRows[0].amount) - parseFloat(args[1]))} WHERE id = '${donor}' AND guild = '${message.guild.id}'`
-      con.query(sql, (e, giving) => {
-        if (e) { throw e } else { console.log(giving) }
-        con.query(sql2, (trerror, transfert) => {
-          if (trerror) { throw trerror } else { console.log(transfert) }
+
+  Users.getUser(message.author, message.guild, (err, donorProfile) => {
+    if (err) {
+      return message.reply("T'as pas d'argent et tu veux en donner ? mdr casse toi")
+    }
+    if (donorProfile.money < gift) {
+      return message.reply(" t'es trop pauvre ah tu me dégoutes casse toi")
+    }
+    if (gift < 0) {
+      return message.reply("DONNER ! D O N N E R ça veut dire du positif, sinon c'est PRENDRE")
+    }
+    Users.getUser(target, message.guild, (error, targetProfile) => {
+      if (error) {
+        con.query(`UPDATE users SET money = '${parseFloat(parseFloat(donorProfile.money) - parseFloat(gift))}' WHERE userID = '${donorProfile.userID}' AND guild = '${donorProfile.guild}'`, (e) => {
+          if (e) { 
+            console.log(e)
+            return message.reply('désolé il y a eu un soucis..')
+          }
+          Users.createUser(target.id, message.guild.id, 0, gift)
         })
-        let currency = 'certithunes'
-        if (parseFloat(args[1]) < 1) { currency = 'certicentimes' }
-        return message.channel.send(`${message.author} vient de donner ${args[1]} ${currency} à ${target}. (si vous voulez mon avis, ça sent le suçage de bite)`)
+      }
+      con.query(`UPDATE users SET money = '${parseFloat(parseFloat(donorProfile.money) - parseFloat(gift))}' WHERE userID = '${donorProfile.userID}' AND guild = '${donorProfile.guild}'`, (e) => {
+        if (e) { 
+          console.log(e)
+          return message.reply('désolé il y a eu un soucis..')
+        }
+        con.query(`UPDATE users SET money = '${parseFloat(parseFloat(targetProfile.money) + parseFloat(gift))}' WHERE userID = '${targetProfile.userID}' AND guild = '${targetProfile.guild}'`, (er) => {
+          if (er) {
+            console.log(er)
+            return message.reply('désolé il y a eu un soucis..')
+          }
+          return message.channel.send(`Oof, ça ressemble à un annulingus ça ! ${message.author} vient de donner ${gift} certithunes à ${target}`)
+        })
       })
     })
   })

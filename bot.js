@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 const config = require('./config.json')
 const Discord = require('discord.js')
-const utilities = require('./utilities.js')
+const utilities = require('./users.js')
 const fs = require('fs')
 const bot = new Discord.Client()
 
@@ -30,7 +30,7 @@ function talk (message) {
   const phrases = ['LOURD!', 'Oui bien sûr', 'Non..', `suce moi ${message.author.username}`, 'J\'avous', `Eh ${message.author.username}, reste tranquille ma gueule`, 'C\'est pas drole.', 'YEET !']
   if (emoji) { phrases.push(`${emoji}`) }
   if (rand <= 3) {
-    utilities.addXP(message, 20, 45, 0)
+    utilities.addXP(message, 35, 45, 0)
     message.channel.send(phrases[Math.floor(Math.random() * phrases.length)])
   }
 }
@@ -70,13 +70,13 @@ bot.on('message', async message => {
   if ((message.author.bot === 1 && message.author.id !== bot.user.id) || message.channel.type === 'dm') { return }
 
   const prefix = config.prefix
-  const messageArray = message.content.split(' ')
-  let cmd = messageArray[1]
+  const messageArray = message.content.replace(/ +/g, ' ').split(' ')
   const args = messageArray.slice(2)
-
+  
   talk(message)
   addReaction(message)
   if (messageArray[0].toLowerCase() !== prefix && messageArray[0] !== `<@${bot.user.id}>`) { return }
+  let cmd = messageArray[1].toLowerCase()
 
   let i = 0
   let words = 0
@@ -91,7 +91,7 @@ bot.on('message', async message => {
   if (cmd === '❤' || cmd === '<3') { cmd = 'jtm' }
   const commandfile = bot.commands.get(cmd)
   if (commandfile) {
-    utilities.addXP(message, 15, 27, 1)
+    utilities.addXP(message, 15, 30, 1)
     setTimeout(() => commandfile.run(bot, message, args), 12)
   } else { return message.reply("hmm... Je comprends absolument rien à ce que tu veux. Pour savoir quoi me demander, fais un petit 'stp pls' (t'es qu'une merde <3)") }
 })

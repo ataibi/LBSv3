@@ -1,25 +1,55 @@
-/* eslint-disable no-console */
 const Discord = require('discord.js')
-const mysql = require('mysql')
-const config = require('../config.json')
+const Users = require('../users.js')
 
-var con = mysql.createConnection({
-  host: config.dbHost,
-  user: config.dbUser,
-  password: config.dbPassword,
-  database: config.dbName
-})
-
-con.connect(err => {
-  if (err) { throw err }
-  console.log('Connected to database.')
-})
-
-function formatDate (date) {
+function formatDate(date) {
   var day = date.getDate()
   var monthIndex = date.getMonth()
   var year = date.getFullYear()
   return day + '/' + (++monthIndex) + '/' + year
+}
+
+const userCard = (userProfile, target) => {
+  let level = userProfile.level
+  let rank
+  let prestige
+  if (level <= 10) {
+    color = '#FFC71E'
+    if (level <= 5) { rank = 'Judas' } else { rank = 'Gars Patibulaire' }
+  } else if (level > 10 && level <= 20) {
+    color = 'E82C0C'
+    if (level <= 15) { rank = 'Gars Perfide' } else { rank = 'Gars Incertain' }
+  } else if (level > 20) {
+    color = 'AD001D'
+    if (level <= 25) { rank = 'Gars Solide' } else { rank = 'Gars Sûr' }
+  }
+  if (level > 30) { level = 30 }
+  switch (level % 5) {
+    case 0:
+      prestige = ' **V**'
+      break
+    case 1:
+      prestige = ' **I**'
+      break
+    case 2:
+      prestige = ' **II**'
+      break
+    case 3:
+      prestige = ' **III**'
+      break
+    case 4:
+      prestige = ' **IV**'
+      break
+    default:
+      prestige = ''
+  }
+  let xpCard = new Discord.RichEmbed()
+        .setThumbnail(target.avatarURL)
+        .setTitle(target.username)
+        .addField('Points de certitude :', `${userProfile.experience}/${userProfile.experienceCap}`)
+        .addField('Rang :', `${rank} ${prestige} (niveau ${userProfile.level})`)
+        .addField('Certithunes :', userProfile.money)
+        .setColor(color)
+  return xpCard
 }
 
 module.exports.run = async (bot, message, args) => {
@@ -43,77 +73,15 @@ module.exports.run = async (bot, message, args) => {
       .setColor(color)
     return message.channel.send(xpCard)
   }
-  con.query(`SELECT * FROM experience WHERE id = '${target.id}' AND guild = '${message.guild.id}'`, (err, rows) => {
-    if (err) { throw err }
-    if (!rows[0]) { return message.channel.send(target + " n'a aucune certitude.") }
 
-    let thunes
-    let xp = rows[0].xp
-    let level = 1
-    let xpPool = 1234
-    while (xp >= xpPool) {
-      level++
-      xp = xp - xpPool
-      xpPool = xpPool * 1.5
+  Users.getUser(target, message.guild, (err, userProfile) => {
+    if (err) {
+      console.log(err)
+      return message.channel.send(`${target.username} est absolument incertain.. je serais toi je lui parlerais pas `)
     }
-
-    if (level <= 10) {
-      color = '#FFC71E'
-      if (level <= 5) { rank = 'Judas' } else { rank = 'Gars Patibulaire' }
-    } else if (level > 10 && level <= 20) {
-      color = 'E82C0C'
-      if (level <= 15) { rank = 'Gars Perfide' } else { rank = 'Gars Incertain' }
-    } else if (level > 20) {
-      color = 'AD001D'
-      if (level <= 25) { rank = 'Gars Solide' } else { rank = 'Gars Sûr' }
-    }
-    if (level > 30) { level = 30 }
-    switch (level % 5) {
-      case 0:
-        prestige = ' **V**'
-        break
-      case 1:
-        prestige = ' **I**'
-        break
-      case 2:
-        prestige = ' **II**'
-        break
-      case 3:
-        prestige = ' **III**'
-        break
-      case 4:
-        prestige = ' **IV**'
-        break
-      default:
-        prestige = ''
-    }
-
-    con.query(`SELECT * FROM certithunes WHERE id = '${target.id}' AND guild = '${message.guild.id}'`, (err, certi) => {
-      if (err) { throw err }
-      if (!certi[0]) { thunes = 0 } else { thunes = certi[0].amount }
-      var xpCard = new Discord.RichEmbed()
-        .setThumbnail(target.avatarURL)
-        .setTitle(target.username)
-        .addField('Points de certitude :', rows[0].xp)
-        .addField('Points requis pour le rang suivant :', Math.floor(xpPool - xp))
-        .addField('Rang :', `${rank} ${prestige} (niveau ${level})`)
-        .addField('Certithunes :', thunes)
-        .setColor(color)
-      con.query(`SELECT * FROM shop WHERE userID = '${target.id}' AND guildID = '${message.guild.id}' AND itemID = '1'`, (err, rows) => {
-        if (err) {
-          console.error(err)
-        }
-        if (rows.length > 0) {
-          if (new Date(parseInt(rows[0].expiresOn)) > (new Date())) { xpCard.addField('Bonus de certitude : ', `Jusqu'au ${formatDate(new Date(parseInt(rows[0].expiresOn)))}`) } else { xpCard.addField('Bonus de certitude : ', `Jusqu'au ${formatDate(new Date(parseInt(rows[0].expiresOn)))} (expiré)`) }
-        } else {
-          xpCard.addField('Bonus de certitude : ', `Aucun bonus n'a été acheté pour l'instant (On manque de moyen ${target.username} ?)`)
-        }
-        return message.channel.send(xpCard)
-      })
-    })
+    message.channel.send(userCard(userProfile, target))
   })
 }
-
 module.exports.help = {
   name: 'certitude',
   description: 'Ouais parce que mon dev savait pas quoi faire alors il a mis un systeme d\'experience en place',
