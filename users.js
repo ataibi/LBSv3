@@ -76,7 +76,7 @@ module.exports.increaseLevel = (newLevel, message) => {
 
 module.exports.createUser = (userID, guild, experience, money) => {
   const timeNow = parseInt(Date.now())
-  con.query(`INSERT INTO users(userID, guild, experience, lastExperience, money, lastMoney) VALUES('${userID}', '${guild}', '${experience}', ${timeNow}, '${money}', '${timeNow}')`, (err) => {
+  con.query(`INSERT INTO users(userID, guild, experience, lastExperience, money, lastMoney) VALUES('${userID}', '${guild}', '${experience}', ${timeNow}, '${money}', '${money > 0 ? timeNow : 0}')`, (err) => {
     if (err) return console.log(err)
     return console.log('successfully created user profile')
   })
@@ -98,7 +98,8 @@ module.exports.addXP = (message, min, max, cmd) => {
     if (err) {
       return module.exports.createUser(message.author.id, message.guild.id, experience, 0.00)
     }
-    if (parseInt(userProfile.lastExperience) + 6000 >= Date.now() && cmd === 1) {
+    let cooldown = Math.floor(Math.random() * 30000) + 6000
+    if (parseInt(userProfile.lastExperience) + cooldown >= Date.now() && cmd === 1) {
       return console.log(`${message.author.tag} gained xp too recently`)
     }
     if (userProfile.experience + experience >= userProfile.experienceCap) {

@@ -28,7 +28,7 @@ module.exports.run = async (bot, message, args) => {
       while (userList[position] && position < maxNumber) {
         user = message.guild.members.find(userObject => userObject.id === userList[position].userID)
         console.log({ position, user })
-        ladder.addField(`__**#${position + 1} : ${user ? user.displayName : "Perdu dans l'incertitude"}**__`, `_${userList[position].experience} points de certitude._`)
+        ladder.addField(`__**#${position + 1} : ${user ? user.displayName : "Perdu dans l'incertitude"}**__`, `_${userList[position].experience} points de certitude.(${userList[position].money} certithunes)_`)
         position++
       }
       message.channel.send(ladder)

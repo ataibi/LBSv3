@@ -29,7 +29,7 @@ module.exports.run = async (bot, message, args) => {
     let cooldown = new Date(parseInt(userProfile.lastMoney))
     const timeNow = parseInt(Date.now())
 
-    if (today === 4) { money += money } else { console.log('regular day, no money bonus') }
+    if (today === 4) { money = parseFloat(parseFloat(money) + money) } else { console.log('regular day, no money bonus') }
     
     if (now.setHours(0, 0, 0, 0) === cooldown.setHours(0, 0, 0, 0)) {
       message.reply(`tu fais pitié à réclamer de l'argent comme une roumaine dans le metro`)// random from alreadyAsked array

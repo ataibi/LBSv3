@@ -29,7 +29,10 @@ module.exports.run = async (bot, message, args) => {
       message.channel.send(response)
       .then(sentAnswer => { feedback.isResultAccurate(bot, sentAnswer, message.author) })
       .catch(console.error)
-    }).catch(e => { console.log(e) })
+    }).catch(e => {
+        console.log(e)
+        message.channel.send('désolé je trouve rien');
+    })
 }
 
 module.exports.help = {
