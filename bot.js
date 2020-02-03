@@ -6,6 +6,7 @@ const fs = require('fs')
 const bot = new Discord.Client()
 
 bot.commands = new Discord.Collection()
+bot.musicCommands = new Discord.Collection()
 
 fs.readdir('./commands', (err, files) => {
   if (err) { console.log(err) }
@@ -20,6 +21,23 @@ fs.readdir('./commands', (err, files) => {
     const props = require(`./commands/${f}`)
     console.log(f + ' loaded')
     bot.commands.set(props.help.name, props)
+  })
+})
+
+
+fs.readdir('./musicCommands', (err, files) => {
+  if (err) { console.log(err) }
+
+  const musicFiles = files.filter(mf => mf.split('.').pop() === 'js')
+  if (musicFiles.length <= 0) {
+    console.log("Couldn't find commands.")
+    return
+  }
+
+  musicFiles.forEach((mf) => {
+    const props = require(`./musicCommands/${mf}`)
+    console.log(`music command ${mf} loaded`)
+    bot.musicCommands.set(props.help.name, props)
   })
 })
 
@@ -66,6 +84,8 @@ function botActivity (bot) {
   }
 }
 
+const queue = new Map()
+
 bot.on('message', async message => {
   if ((message.author.bot === 1 && message.author.id !== bot.user.id) || message.channel.type === 'dm') { return }
 
@@ -90,9 +110,13 @@ bot.on('message', async message => {
 
   if (cmd === '❤' || cmd === '<3') { cmd = 'jtm' }
   const commandfile = bot.commands.get(cmd)
+  const musicFile = bot.musicCommands.get(cmd)
   if (commandfile) {
     utilities.addXP(message, 15, 30, 1)
     setTimeout(() => commandfile.run(bot, message, args), 12)
+  } else if (musicFile) {
+    utilities.addXP(message, 10, 25, 1)
+    musicFile.run(bot, message, args, queue)
   } else { return message.reply("hmm... Je comprends absolument rien à ce que tu veux. Pour savoir quoi me demander, fais un petit 'stp pls' (t'es qu'une merde <3)") }
 })
 

@@ -1,14 +1,20 @@
 const Discord = require('discord.js')
 
 module.exports.run = async (bot, message, args) => {
+  let commands
+  if (args[0] === "music")
+    commands = bot.musicCommands
+  else {
+    commands = bot.commands
+  }
   let ncommands = 0
-  bot.commands.forEach(command => ncommands++)
+  commands.forEach(command => ncommands++)
 
   if (ncommands <= 24) {
     const helpembed = new Discord.RichEmbed()
       .setDescription("Alors comme ça on a besoin d'aide ? Grosse flemme de faire du cas par cas donc j'te lache tous les trucs que tu peux me demander d'un coup :")
       .setColor('#A4244E')
-    bot.commands.forEach(command => {
+    commands.forEach(command => {
       helpembed.addField(`__${command.help.name}:__ ${command.help.description}`, `\`${command.help.examples}\``)
     })
 
@@ -27,7 +33,7 @@ module.exports.run = async (bot, message, args) => {
           let helpembed = new Discord.RichEmbed()
             .setColor('#A4244E')
           helpembed.addField(`**Page ${nPage + 1}**`, '__')
-          bot.commands.forEach(command => {
+          commands.forEach(command => {
             ncommands++
             if (ncommands >= 25) {
               message.author.send(helpembed)
@@ -51,5 +57,5 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'pls',
   description: 'Pour les cas de PLS ultime, affiche l\'aide',
-  examples: 'stp pls'
+  examples: 'stp pls, stp pls music'
 }

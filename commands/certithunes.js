@@ -29,7 +29,7 @@ module.exports.run = async (bot, message, args) => {
     let cooldown = new Date(parseInt(userProfile.lastMoney))
     const timeNow = parseInt(Date.now())
 
-    if (today === 4) { money = parseFloat(parseFloat(money) + money) } else { console.log('regular day, no money bonus') }
+    if (today === 4) { money = parseFloat(money * 2).toFixed(2) } else { console.log('regular day, no money bonus') }
     
     if (now.setHours(0, 0, 0, 0) === cooldown.setHours(0, 0, 0, 0)) {
       message.reply(`tu fais pitié à réclamer de l'argent comme une roumaine dans le metro`)// random from alreadyAsked array
@@ -39,7 +39,7 @@ module.exports.run = async (bot, message, args) => {
     con.query(`UPDATE users SET money = ${total}, lastMoney = '${timeNow}' WHERE userID = '${message.author.id}' AND guild = '${message.guild.id}'`, (error) => {
       if (error) console.log(error)
       console.log(`gave ${money}certithunes to ${message.author.tag}`)
-      message.reply(`tu viens de gagner ${money} certithunes ! Reviens demain ou suce ma bite`)
+      message.reply(`tu viens de gagner ${parseFloat(money).toFixed(2)} certithunes ! Reviens demain ou suce ma bite`)
     })
   })
 }
