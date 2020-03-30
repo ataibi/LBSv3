@@ -16,6 +16,7 @@
     "mysql": "^2.17.1",
     "node-opus": "^0.3.3",
     "nodemon": "^1.19.4",
+    "pm2": "^4.2.3",
     "pornsearch": "^2.4.3",
     "validate.js": "^0.13.1",
     "youtube-search": "^1.1.4",
