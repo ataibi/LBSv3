@@ -17,7 +17,7 @@ module.exports.run = async (bot, message, args, queue) => {
         let video = queue.guildId[index]
         const embed = new Discord.RichEmbed()
         .setTitle(`🎵 En cours : **${video.title}**`)
-        .addField(`uploadé par : ${video.author}`, `**${minutes}:${parseInt(secondes) < 10 ? '0' + secondes : secondes}/${Math.floor(video.duration / 60)}:${parseInt(video.duration % 60) < 10 ? '0' + video.duration % 60 : video.duration % 60}**`)
+        .addField(`Durée :`, `**${minutes}:${parseInt(secondes) < 10 ? '0' + secondes : secondes}/${Math.floor(video.duration / 60)}:${parseInt(video.duration % 60) < 10 ? '0' + video.duration % 60 : video.duration % 60}**`)
         .addField('__Ajouté par :__', `**${video.addedBy}**`)
         .addField('__Suivant :__', `${queue.guildId[index + 1] ? queue.guildId[index + 1].title : 'Rien mdr'}`)
         .setThumbnail(`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`)
