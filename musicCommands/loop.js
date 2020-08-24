@@ -12,7 +12,7 @@ module.exports.run = async (bot, message, args, queue) => {
     } else if (args[0] !== 'ça' && args[0] !== 'ca' && args[0] !== 'tout' && args[0] !== 'plus') { return message.reply('je sais pas ce que tu veux que je loop, tu peux dire "stp loop ça" ou "stp loop tout"') }
     if (!botIsConnected || !queue.guildId) { return message.reply("alors toi t'es vraiment une sacrée merde... je suis pas connecté au vocal, y'a pas de queue, et tu veux que je tourne en boucle... C'EST TA GRAND MERE QUI VA TOURNER EN BOUCLE SALE CHIEN mdr pardon ok désolé je m'excuse") }
     switch (args[0]) {
-        case 'plus':
+        case ('plus'|| 'stop'):
             console.log(`Stopped loop. Requested by ${message.author.tag}`)
             queue.guildId[0].loop = 'none'
             return message.reply("ok j'arrete la loop !")
@@ -38,5 +38,5 @@ module.exports.run = async (bot, message, args, queue) => {
 module.exports.help = {
   name: 'loop',
   description: 'boucle les sons',
-  examples: 'stp loop ça/ca/this/it/song (pour le son actuel), stp loop tout/all/playlist/queue (pour la playlist), stp loop plus (pour arreter)'
+  examples: 'stp loop ça/ca/this/it/song (pour le son actuel), stp loop tout/all/playlist/queue (pour la playlist), stp loop plus/stop (pour arreter)'
 }

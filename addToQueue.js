@@ -12,7 +12,7 @@ module.exports.video = async (videoURL, message, voiceConnection, queue) => {
 		}
         const embed = new Discord.RichEmbed()
             .setTitle(`🎵 **${video.title}** a été rajouté à la liste de lecture`)
-            .addField('Durée :', ` ${Math.floor(video.length_seconds / 60)}:${parseInt(video.length_seconds % 60) < 10 ? '0' + video.length_seconds % 60 : video.length_seconds % 60}`)
+            .addField('Durée :', ` ${Math.floor(video.videoDetails.lengthSeconds / 60)}:${parseInt(video.videoDetails.lengthSeconds % 60) < 10 ? '0' + video.videoDetails.lengthSeconds % 60 : video.videoDetails.lengthSeconds % 60}`)
             .setThumbnail(`https://i.ytimg.com/vi/${video.video_id}/hqdefault.jpg`)
             .setColor('DARK_RED')
             .setURL(videoURL)
@@ -27,10 +27,10 @@ module.exports.video = async (videoURL, message, voiceConnection, queue) => {
                         volume: 0.5
                     }
                     queue.guildId[0].url = videoURL
-                    queue.guildId[0].title = video.title
-                    queue.guildId[0].id = video.video_id
+                    queue.guildId[0].title = video.videoDetails.title
+                    queue.guildId[0].id = video.videoDetails.videoId
                     queue.guildId[0].addedBy = message.author.username
-                    queue.guildId[0].duration = video.length_seconds
+                    queue.guildId[0].duration = video.videoDetails.lengthSeconds
                     queue.guildId[0].loop = "none"
                     queue.guildId[0].np = false
                     music.playMusic(message.channel, voiceConnection, queue.guildId, 0, answer)
@@ -40,9 +40,9 @@ module.exports.video = async (videoURL, message, voiceConnection, queue) => {
                     queue.guildId[queueSize] = {}
                     queue.guildId[queueSize].addedBy = message.author.username
                     queue.guildId[queueSize].url = videoURL
-                    queue.guildId[queueSize].id = video.video_id
+                    queue.guildId[queueSize].id = video.videoDetails.videoId
                     queue.guildId[queueSize].np = false
-                    queue.guildId[queueSize].duration = video.length_seconds
+                    queue.guildId[queueSize].duration = video.videoDetails.lengthSeconds
                     queue.guildId[queueSize].title = video.title
                     if (!voiceConnection.speaking)
                         music.playMusic(message.channel, voiceConnection, queue.guildId, queueSize, answer)

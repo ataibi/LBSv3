@@ -29,8 +29,8 @@ module.exports.run = async (bot, message, args, queue) => {
 }
 
 module.exports.help = {
-    name: 'np',
+    name: 'song',
     description: 'Affiche la musique en cours et la musique suivante',
-    examples: 'stp np'
+    examples: 'stp song'
   }
   

@@ -16,7 +16,7 @@ module.exports.run = async (bot, message, args, queue) => {
 }
 
 module.exports.help = {
-  name: 'reprend',
+  name: 'play',
   description: 'Reprend la lecture',
-  examples: 'stp reprend'
+  examples: 'stp play'
 }
