@@ -7,7 +7,7 @@ module.exports.run = async (bot, message, args, queue) => {
     let minutes = 00
     let secondes = 00
     if (botIsConnected) {
-        progress = parseInt(botIsConnected.streamDispatcher.time / 1000)
+        progress = parseInt(botIsConnected.dispatcher.streamTime / 1000)
         minutes = Math.floor(progress / 60)
         secondes = parseInt(progress % 60)
     }

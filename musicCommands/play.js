@@ -62,7 +62,7 @@ module.exports.run = async (bot, message, args, queue) => {
         console.log('### 63 ###')
         var options = {
             maxResults: 50,
-            key: config.googleAPI,
+            key: config.youtubeAPI,
             type: 'video'
         }
         let index = 1
