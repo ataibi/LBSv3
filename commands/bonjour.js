@@ -3,7 +3,10 @@ const Discord = require('discord.js')
 
 module.exports.run = async (bot, message, args) => {
   return message.reply('Coucou toi, ça va ?', {
-    file: './images/bonjour.jpg'
+    files: [{
+      attachment: './images/bonjour.jpg',
+      name: 'bonjour.jpg'
+    }]
   })
 }
 

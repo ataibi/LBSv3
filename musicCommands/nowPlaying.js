@@ -3,11 +3,11 @@ const Discord = require('discord.js')
 
 module.exports.run = async (bot, message, args, queue) => {
     let guildId = message.guild.id
-    let botIsConnected = bot.voiceConnections.get(message.guild.id)
+    let botIsConnected = bot.voice.connections.get(message.guild.id)
     let minutes = 00
     let secondes = 00
     if (botIsConnected) {
-        progress = parseInt(botIsConnected.dispatcher.time / 1000)
+        progress = parseInt(botIsConnected.streamDispatcher.time / 1000)
         minutes = Math.floor(progress / 60)
         secondes = parseInt(progress % 60)
     }
@@ -15,7 +15,7 @@ module.exports.run = async (bot, message, args, queue) => {
         let index = 0
         while (queue.guildId[index].np == 0) { index++ }
         let video = queue.guildId[index]
-        const embed = new Discord.RichEmbed()
+        const embed = new Discord.MessageEmbed()
         .setTitle(`🎵 En cours : **${video.title}**`)
         .addField(`Durée :`, `**${minutes}:${parseInt(secondes) < 10 ? '0' + secondes : secondes}/${Math.floor(video.duration / 60)}:${parseInt(video.duration % 60) < 10 ? '0' + video.duration % 60 : video.duration % 60}**`)
         .addField('__Ajouté par :__', `**${video.addedBy}**`)

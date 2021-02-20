@@ -20,14 +20,14 @@ module.exports.run = async (bot, message, args) => {
   con.query(`SELECT * FROM users WHERE guild = ${message.guild.id} ORDER BY experience DESC`, (err, userList) => {
     if (err) console.log(err)
     if (userList[0] && userList.length > 1 && userList.length < 25) {
-      const ladder = new Discord.RichEmbed()
+      const ladder = new Discord.MessageEmbed()
         .setTitle(`Classement de certitude chez \`${message.guild.name}\``)
         .setColor('GOLD')
       let position = 0
       let user
       while (userList[position] && position < maxNumber) {
-        user = message.guild.members.find(userObject => userObject.id === userList[position].userID)
-        console.log({ position, user })
+        let user = message.guild.members.cache.get(userList[position].userID)
+        console.log(`_______________________________\nUserList[${position}].userID: ` + userList[position].userID + '\n_______________________________\nuser: ' + user )
         ladder.addField(`__**#${position + 1} : ${user ? user.displayName : "Perdu dans l'incertitude"}**__`, `_${userList[position].experience} points de certitude.(${userList[position].money} certithunes)_`)
         position++
       }

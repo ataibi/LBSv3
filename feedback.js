@@ -12,7 +12,7 @@ module.exports = {
         const filter = (reaction, user ) => reaction.emoji.name === trigger &&  user.id === author.id
         const feedback = message.createReactionCollector(filter, { time : 7000 })
         feedback.on('collect', reaction => {
-                message.delete(1000);
+            message.delete({ timeout: 1000, reason: 'It had to be done.' })
                 console.log("deleted")
             }
         )

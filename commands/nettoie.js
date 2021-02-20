@@ -3,7 +3,10 @@ const Discord = require('discord.js')
 
 module.exports.run = async (bot, message, args) => {
   return message.channel.send('On passe un petit coup de balai par ici, continuez vos occupations mes gars sûrs', {
-    file: './images/nettoie.gif'
+    files: [{
+      attachment: './images/nettoie.gif',
+      name: 'nettoie.gif'
+    }]
   })
 }
 

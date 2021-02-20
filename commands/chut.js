@@ -11,11 +11,17 @@ module.exports.run = async (bot, message, args) => {
   })
   if (i > 0) {
     return message.channel.send(msg + ', shhhhhhhh', {
-      file: './images/sh.jpg'
+      files: [{
+        attachment: './images/sh.jpg',
+        name: 'sh.jpg'
+      }] 
     })
   } else {
     return message.channel.send('SHHHH', {
-      file: './images/sh.jpg'
+      files: [{
+        attachment: './images/sh.jpg',
+        name: 'sh.jpg'
+      }]
     })
   }
 }

@@ -5,7 +5,7 @@ const search = require('youtube-search')
 const URL = require("url").URL;
 const config = require('../config.json')
 const addToQueue = require('../addToQueue.js')
-const ytlist = require('youtube-playlist');
+const ytlist = require('@distube/ytpl');
 
 
 const isURL = (s) => {
@@ -18,37 +18,39 @@ const isURL = (s) => {
 }
 
 module.exports.run = async (bot, message, args, queue) => {
-    botIsConnected = bot.voiceConnections.get(message.guild.id)
+    botIsConnected = bot.voice.connections.get(message.guild.id)
     let guildId = message.guild.id
     let voiceChannel
-    if (!message.member.voiceChannel) {
+    console.log('### 23 ###')
+    if (!message.member.voice.channel) {
         return message.reply('Faut être dans un voice chan pour demander de play ma gueule')
-    } else if (botIsConnected && botIsConnected.channel !== message.member.voiceChannel) {
+    } else if (botIsConnected && botIsConnected.channel !== message.member.voice.channel) {
         return message.reply("faut venir dans mon chan vocal, j'suis posé je bouge **pas**.")
     } else if (!args[0]) {
         return message.reply(`Wesh t'es teubé faut me donner un lien pour play, si tu veux reprendre la lecture, fait un petit "stp reprend" (ouais c'était plus simple à coder comme ça mdr)`)
     }
     if (isURL(args[0]) && !ytdl.validateURL(args[0])) {
+        console.log('### 33 ###')
         let videosAdded = 0
-        ytlist(args[0], 'url')
-            .then(videoURL => {
-                console.log(videoURL)
-                voiceChannel = message.member.voiceChannel
+        ytlist(args[0]).then(videoURL => {
+            console.log(videoURL.items)
+            voiceChannel = message.member.voice.channel
             if (!botIsConnected) {
                 voiceChannel.join()
                     .then(voiceConnection => {
-                        videoURL.data.playlist.forEach(video => {
+                        videoURL.items.forEach(video => {
                             setTimeout(() => {
-                                addToQueue.video(video, message, voiceConnection, queue)
+                                console.log(`adding ${video.url} to queue`)
+                                addToQueue.video(video.url, message, voiceConnection, queue)
                             }, 100)
                             videosAdded++
                         })
-                    })
-                    .catch(console.error)
+                }).catch(console.error)
             } else {
-                videoURL.data.playlist.forEach(video => {
+                videoURL.items.forEach(video => {
                     setTimeout(() => {
-                        addToQueue.video(video, message, botIsConnected, queue)
+                        console.log(`adding ${video} to queue`)
+                        addToQueue.video(video.url, message, botIsConnected, queue)
                     }, 100)
                     videosAdded++
                 })
@@ -56,8 +58,8 @@ module.exports.run = async (bot, message, args, queue) => {
             })
         if (videosAdded > 0)
             return console.log(`added ${videosAdded} titles to playlist`)
-    }
-    if (!isURL(args[0]) && !ytdl.validateURL(args[0])) {
+    } else if (!isURL(args[0]) && !ytdl.validateURL(args[0])) {
+        console.log('### 63 ###')
         var options = {
             maxResults: 50,
             key: config.googleAPI,
@@ -77,19 +79,24 @@ module.exports.run = async (bot, message, args, queue) => {
                 console.error(err)
             }
             const video = res[index - 1]
-            voiceChannel = message.member.voiceChannel
+            console.log('### 83 ###')
+            if (!video) console.error()
+            voiceChannel = message.member.voice.channel
             if (!botIsConnected) {
                 voiceChannel.join()
                     .then(voiceConnection => {
+                        console.log('### 93 ###')
                         addToQueue.video(video.link, message, voiceConnection, queue)
                     })
                     .catch(console.error)
             } else {
+                console.log('### 103 ###')
                 addToQueue.video(video.link, message, botIsConnected, queue)
             }
         })
     } else {
-        voiceChannel = message.member.voiceChannel
+        console.log('gonna play')
+        voiceChannel = message.member.voice.channel
         if (!botIsConnected) {
             voiceChannel.join()
                 .then(voiceConnection => {

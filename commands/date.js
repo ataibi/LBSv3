@@ -6,19 +6,31 @@ module.exports.run = async (bot, message, args) => {
   const day = date.getDay()
   if (day === 1) {
     return message.channel.send('Today is monday 😴', {
-      file: './images/monday.jpg'
+      files: [{
+        attachment: './images/monday.jpg',
+        name: 'monday.jpg'
+      }]
     })
   } else if (day === 3) {
     return message.channel.send("It's wednesday my dudes" + message.client.emojis.get('410832474382401546'), {
-      file: './images/wednesday.jpg'
+      files: [{
+        attachment: './images/wednesday.jpg',
+        name: 'wednesday.jpg'
+      }]
     })
   } else if (day === 4) {
     return message.channel.send('Jeudi Ok is on the way' + message.client.emojis.get('408104603029078023'), {
-      file: './images/jeudiOK.jpg'
+      files: [{
+        attachment: './images/jeudiOK.jpg',
+        name: 'jeudiOK.jpg'
+      }]
     })
   } else {
     return message.channel.send("It's not wednesday my friends.", {
-      file: './images/otherday.jpg'
+      files: [{
+        attachment: './images/otherday.jpg',
+        name: 'otherday.jpg'
+      }]
     })
   }
 }

@@ -17,18 +17,18 @@ const reduceVolume = (dispatcher, amount, message, queue) => {
 
 module.exports.run = async (bot, message, args, queue) => {
     let guildId = message.guild.id
-    let botIsConnected = bot.voiceConnections.get(message.guild.id)
+    let botIsConnected = bot.voice.connections.get(message.guild.id)
     if (!botIsConnected ) {
         message.reply("j'suis pas co ma gueule")
-    } else if (botIsConnected && botIsConnected.channel !== message.member.voiceChannel) {
+    } else if (botIsConnected && botIsConnected.channel !== message.member.voice.channel) {
         return message.reply("faut venir dans mon chan vocal, j'suis posé je bouge **pas**.")
-    } else if (botIsConnected.dispatcher && !botIsConnected.dispatcher.paused) {
+    } else if (botIsConnected.streamDispatcher && !botIsConnected.streamDispatcher.paused) {
         if (parseInt(args[0]) < 100 && parseInt(args[0])> 1)
-            reduceVolume(botIsConnected.dispatcher, parseInt(args[0]), message, queue.guildId)
+            reduceVolume(botIsConnected.streamDispatcher, parseInt(args[0]), message, queue.guildId)
         else if (parseInt(args[0]))
             return message.reply('valeur INCORRECTE SALE PUTAIN DE TA RACE pardon je me suis laissé emporter... mais wesh aussi tu veux changer le son, fais un vrai truc')
         else
-            reduceVolume(botIsConnected.dispatcher, 5, message, queue.guildId)
+            reduceVolume(botIsConnected.streamDispatcher, 5, message, queue.guildId)
     } else {
         if (botIsConnected.dispatcher)
             return message.reply("J'suis en pause et tu veux baisser le son ? nique toi c'est toi qui parle trop fort")

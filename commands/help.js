@@ -11,7 +11,7 @@ module.exports.run = async (bot, message, args) => {
   commands.forEach(command => ncommands++)
 
   if (ncommands <= 24) {
-    const helpembed = new Discord.RichEmbed()
+    const helpembed = new Discord.MessageEmbed()
       .setDescription("Alors comme ça on a besoin d'aide ? Grosse flemme de faire du cas par cas donc j'te lache tous les trucs que tu peux me demander d'un coup :")
       .setColor('#A4244E')
     commands.forEach(command => {
@@ -30,14 +30,14 @@ module.exports.run = async (bot, message, args) => {
         .then(() => {
           ncommands = 0
           let nPage = 0
-          let helpembed = new Discord.RichEmbed()
+          let helpembed = new Discord.MessageEmbed()
             .setColor('#A4244E')
           helpembed.addField(`**Page ${nPage + 1}**`, '__')
           commands.forEach(command => {
             ncommands++
             if (ncommands >= 25) {
               message.author.send(helpembed)
-              helpembed = new Discord.RichEmbed()
+              helpembed = new Discord.MessageEmbed()
               helpembed.setColor('#A4244E')
               nPage++
               helpembed.addField(`**Page ${nPage + 1}**`, '__')

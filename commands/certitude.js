@@ -42,8 +42,8 @@ const userCard = (userProfile, target) => {
     default:
       prestige = ''
   }
-  let xpCard = new Discord.RichEmbed()
-        .setThumbnail(target.avatarURL)
+  let xpCard = new Discord.MessageEmbed()
+        .setThumbnail(target.avatarURL())
         .setTitle(target.username)
         .addField('Points de certitude :', `${userProfile.experience}/${userProfile.experienceCap}`)
         .addField('Rang :', `${rank} ${prestige} (niveau ${userProfile.level})`)
@@ -55,7 +55,7 @@ const userCard = (userProfile, target) => {
 module.exports.run = async (bot, message, args) => {
   let cleanArg = 0
   if (args[0] !== undefined) { cleanArg = args[0].replace(/\D/g, '') }
-  const target = (cleanArg !== 0 && message.guild.members.find(member => member.id === cleanArg) !== undefined) ? message.guild.members.find(member => member.id === cleanArg).user : message.author
+  const target = (cleanArg !== 0 && message.guild.members.cache.find(member => member.id === cleanArg) !== undefined) ? message.guild.members.cache.find(member => member.id === cleanArg).user : message.author
 
   let color
   let rank
@@ -64,8 +64,8 @@ module.exports.run = async (bot, message, args) => {
     rank = 'Bot Sûr'
     prestige = ' **V**'
     color = 'AD001D'
-    const xpCard = new Discord.RichEmbed()
-      .setThumbnail(bot.user.avatarURL)
+    const xpCard = new Discord.MessageEmbed()
+      .setThumbnail(bot.user.avatarURL())
       .setTitle(bot.user.username)
       .addField('Points de certitude :', '**∞**')
       .addField('Points requis pour le rang suivant :', 'Tu peux pas faire plus sûr')

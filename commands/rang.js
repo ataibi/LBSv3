@@ -9,7 +9,7 @@ module.exports.run = async (bot, message, args) => {
       totalXp[level + 1] = Math.floor(((Math.exp(Math.log(level) * 0.5) * 1200) + (Math.exp(Math.log(level - 1) * 0.5) * 1200)) + totalXp[level])
       level++;
   }
-  const rangCard = new Discord.RichEmbed()
+  const rangCard = new Discord.MessageEmbed()
     .setTitle('__**LES RANGS DE LA CERTITUDE**__')
     .setColor('0CA170')
     .addField('__Judas :__', `De **0** à **${parseInt(totalXp[5]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')}** points certitude.`)

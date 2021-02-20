@@ -44,7 +44,7 @@ fs.readdir('./musicCommands', (err, files) => {
 function talk (message) {
   const rand = Math.floor(Math.random() * 100) + 1
   console.log(rand)
-  const emoji = bot.emojis.random()
+  const emoji = bot.emojis.cache.random()
   const phrases = ['LOURD!', 'Oui bien sûr', 'Non..', `suce moi ${message.author.username}`, 'J\'avous', `Eh ${message.author.username}, reste tranquille ma gueule`, 'C\'est pas drole.', 'YEET !']
   if (emoji) { phrases.push(`${emoji}`) }
   if (rand <= 3) {
@@ -56,16 +56,24 @@ function talk (message) {
 function addReaction (message) {
   const rand = Math.floor(Math.random() * 1000) + 1
   console.log(`Random for reaction : ${rand}`)
-  const emoji = bot.emojis.random().id
+  const emoji = bot.emojis.cache.random().id
   if (rand >= 990) {
     utilities.addXP(message, 30, 40, 0)
-    message.react(bot.emojis.get(emoji))
+    message.react(bot.emojis.cache.get(emoji))
   }
 }
 
 var botActive = 0
 bot.on('ready', async () => {
   console.log(`logged in as ${bot.user.username}`)
+  console.log('fetching members')
+  bot.guilds.fetch('396409083915272204')
+  .then(guild => {
+    guild.members.fetch()
+    .then(console.log('members fetched'))
+    .catch(console.error)
+  })
+  .catch(console.error)
   botActivity(bot)
   botActive = 1
   setInterval(function () { botActivity(bot) }, (40 * 60) * 1000)
@@ -120,5 +128,5 @@ bot.on('message', async message => {
   } else { return message.reply("hmm... Je comprends absolument rien à ce que tu veux. Pour savoir quoi me demander, fais un petit 'stp pls' (t'es qu'une merde <3)") }
 })
 
-bot.login(config.testoken)
-//bot.login(config.token)
+// bot.login(config.testoken)
+bot.login(config.token)

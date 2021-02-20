@@ -5,7 +5,7 @@ const music = require('../music.js')
 
 module.exports.run = async (bot, message, args, queue) => {
     let guildId = message.guild.id
-    let botIsConnected = bot.voiceConnections.get(guildId)
+    let botIsConnected = bot.voice.connections.get(guildId)
 
     if (!args[0]) {
         args[0] = ' '

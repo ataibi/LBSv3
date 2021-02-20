@@ -11,7 +11,10 @@ module.exports.run = async (bot, message, args) => {
   })
   if (i > 0) { msg += ', ' }
   return message.channel.send(msg + 'joyeux anniversaire BG', {
-    file: './images/hbd.jpg'
+    files: [{
+      attachment: './images/hbd.jpg',
+      name: 'hbd.jpg'
+    }]
   })
 }
 

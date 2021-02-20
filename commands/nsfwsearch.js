@@ -6,8 +6,8 @@ module.exports.run = async (bot, message, args) => {
   const Searcher = new Pornsearch(args, 'pornhub')
   Searcher.videos()
     .then(videos => {
-      const response = new Discord.RichEmbed()
-        .setTitle(videos[1].title)
+      const response = new Discord.MessageEmbed()
+        .setTitle(videos[1].title.replace(/\s+/g, ' ').trim())
         .setThumbnail(videos[1].thumb)
         .addField('Duration :', videos[1].duration)
         .setURL(videos[1].url)

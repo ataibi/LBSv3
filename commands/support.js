@@ -3,7 +3,10 @@ const Discord = require('discord.js')
 
 module.exports.run = async (bot, message, args) => {
   return message.channel.send("J'approuve ton message", {
-    file: './images/approve.jpg'
+    files: [{
+      attachment: './images/approve.jpg',
+      name: 'approve.jpg'
+    }] 
   })
 }
 

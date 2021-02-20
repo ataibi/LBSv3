@@ -7,7 +7,7 @@ const feedback = require('../feedback.js')
 module.exports.run = async (bot, message, args) => {
   var options = {
     maxResults: 50,
-    key: config.googleAPI,
+    key: config.youtubeAPI,
     type: 'video'
   }
   let index = 1

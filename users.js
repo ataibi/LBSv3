@@ -44,7 +44,7 @@ const levelUpCard = (newLevel, message) => {
     default:
       prestige = ''
   }
-  return new Discord.RichEmbed()
+  return new Discord.MessageEmbed()
     .setThumbnail(message.author.avatarURL)
     .setTitle(`${message.author.username} vient de gagner en certitude !`)
     .addField('Rang : ', rank + prestige)
@@ -68,15 +68,15 @@ module.exports.increaseLevel = (newLevel, message) => {
   if (newLevel === 26) return
   con.query(`SELECT * FROM experiencetolevel WHERE level = ${newLevel}`, (err, newCap) => {
     if (err) return console.log(err)
-    con.query(`UPDATE users SET level = '${newLevel}', experienceCap = '${newCap[0].experience}' WHERE userID = ${message.author.id} AND guild = ${message.guild.id}`, (e) => {
+    con.query(`UPDATE users SET level = '${newLevel}', experienceCap = '${newCap[0].experience}', username = '${message.author.username}' WHERE userID = ${message.author.id} AND guild = ${message.guild.id}`, (e) => {
       if (e) return console.log(e)
     })
   })
 }
 
-module.exports.createUser = (userID, guild, experience, money) => {
+module.exports.createUser = (userID, guild, experience, money, username) => {
   const timeNow = parseInt(Date.now())
-  con.query(`INSERT INTO users(userID, guild, experience, lastExperience, money, lastMoney) VALUES('${userID}', '${guild}', '${experience}', ${timeNow}, '${money}', '${money > 0 ? timeNow : 0}')`, (err) => {
+  con.query(`INSERT INTO users(username, userID, guild, experience, lastExperience, money, lastMoney) VALUES('${username}', '${userID}', '${guild}', '${experience}', ${timeNow}, '${money}', '${money > 0 ? timeNow : 0}')`, (err) => {
     if (err) return console.log(err)
     return console.log('successfully created user profile')
   })
@@ -96,7 +96,7 @@ module.exports.addXP = (message, min, max, cmd) => {
   }
   module.exports.getUser(message.author, message.guild, (err, userProfile) => {
     if (err) {
-      return module.exports.createUser(message.author.id, message.guild.id, experience, 0.00)
+      return module.exports.createUser(message.author.id, message.guild.id, experience, 0.00, message.author.username)
     }
     let cooldown = Math.floor(Math.random() * 30000) + 6000
     if (parseInt(userProfile.lastExperience) + cooldown >= Date.now() && cmd === 1) {
@@ -106,9 +106,23 @@ module.exports.addXP = (message, min, max, cmd) => {
       module.exports.increaseLevel(userProfile.level + 1, message)
       message.channel.send(levelUpCard(userProfile.level + 1, message))
     }
-    con.query(`UPDATE users SET experience = ${userProfile.experience + experience}, lastExperience = '${timeNow}' WHERE userID = '${message.author.id}' AND guild = '${message.guild.id}'`, (error) => {
+    con.query(`UPDATE users SET experience = ${userProfile.experience + experience}, lastExperience = '${timeNow}', username = '${message.author.username}' WHERE userID = '${message.author.id}' AND guild = '${message.guild.id}'`, (error) => {
       if (error) console.log(error)
       console.log(`gave xp to ${message.author.tag}`)
     })
   })
+}
+
+module.exports.refreshUsername = (guild) => {
+  if (!guild.available) return
+  guild.members.fetch()
+  .then(users => {
+    users.forEach(user => {
+      console.log(user.user.username)
+      con.query(`UPDATE users SET username = '${user.user.username}' WHERE userID = '${user.id}' AND guild = '${guild}'`, (e) => {
+        if (e) return console.log(e)
+      })
+    })
+  }).catch(console.error)
+  console.log('done refreshing')
 }
