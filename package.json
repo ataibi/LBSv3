@@ -18,7 +18,6 @@
     "mysql": "^2.18.1",
     "node-opus": "^0.3.3",
     "nodemon": "^2.0.6",
-    "pm2": "^4.5.0",
     "pornsearch": "^2.4.3",
     "validate.js": "^0.13.1",
     "youtube-playlist": "^1.0.4",
@@ -27,6 +26,7 @@
     "ytdl-core-discord": "^1.2.4"
   },
   "devDependencies": {
+    "pm2": "^4.5.0",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^13.0.1",
     "eslint-plugin-import": "^2.22.1",
