@@ -27,5 +27,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'gif',
   description: 'bah je cherche un gif sur internet, t\'as vraiment besoin d\'une description pour ça ?',
-  examples: 'stp gif I\'m swinging'
+  examples: 'stp gif I\'m swinging',
+  category: 'utile'
 }

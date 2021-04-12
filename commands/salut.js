@@ -14,5 +14,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'salut',
   description: 'dit au revoir au bot, ça fait pas de mal un peu de politesse, grosse pute va!',
-  examples: 'stp salut'
+  examples: 'stp salut',
+  category: 'politesse'
 }

@@ -11,5 +11,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'supprime',
   description: 'supprime ta ou tes couleurs de pseudo ',
-  examples: 'stp supprime'
+  examples: 'stp supprime',
+  category: 'utile'
 }

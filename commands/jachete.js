@@ -12,7 +12,7 @@ var con = mysql.createConnection({
 
 con.connect(err => {
   if (err) { throw err }
-  console.log('Connected to database.')
+  console.log('\x1b[32m[\u2713] \x1b[0m\x1b[34m%s\x1b[0m', `connected to database from store command. `)
 })
 
 module.exports.run = async (bot, message, args) => {
@@ -22,5 +22,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'jachete',
   description: 'Tu veux acheter un bail ?',
-  examples: 'stp jachete'
+  examples: 'stp jachete',
+  category: 'streetlife'
 }

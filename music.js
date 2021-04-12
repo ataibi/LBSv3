@@ -24,7 +24,7 @@ module.exports.playMusic = async (textChannel, voiceConnection, queue, index, an
         }
     })
     dispatcher.on('error', (error) => {
-        console.log('error')
+        console.error('\x1b[41m%s\x1b[0m %s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, error)
     })
-    dispatcher.on('debug', (debug) => { console.log(debug)})
+    dispatcher.on('debug', (debug) => { console.debug(debug)})
 }

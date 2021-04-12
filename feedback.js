@@ -13,7 +13,7 @@ module.exports = {
         const feedback = message.createReactionCollector(filter, { time : 7000 })
         feedback.on('collect', reaction => {
             message.delete({ timeout: 1000, reason: 'It had to be done.' })
-                console.log("deleted")
+                console.log("message removed for inaccuracy")
             }
         )
         feedback.on('end', collected => {

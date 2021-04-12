@@ -13,5 +13,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'refresh',
   description: "refresh les noms d'utilisateurs dans la base de donnée",
-  examples: 'stp refresh'
+  examples: 'stp refresh',
+  category: 'admin'
 }

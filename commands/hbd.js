@@ -21,5 +21,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'hbd',
   description: 'Souhaite un joyeux anniversaire à l\'utilisateur identifié',
-  examples: ['stp hbd @user#1234']
+  examples: ['stp hbd @user#1234'],
+  category: 'politesse'
 }

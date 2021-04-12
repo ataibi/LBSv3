@@ -21,8 +21,7 @@ module.exports.run = async (bot, message, args) => {
   const answer = `Youtube me donne ça pour '${query}'\n`
   search(query, options, (err, res) => {
     if (err) {
-      console.log(`index = ${index}, response = ${res}`)
-      console.error(err)
+      console.error('\x1b[41m%s\x1b[0m %s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, err)
     }
     const video = res[index - 1]
     const response = answer + video.link
@@ -35,5 +34,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'youtube',
   description: 'pff vraiment, une description pour cette commande aussi ? assisté/10... Ca envoie la premiere vidéo de ta recherche',
-  examples: 'stp youtube kawaii compilation'
+  examples: 'stp youtube kawaii compilation',
+  category: 'utile'
 }

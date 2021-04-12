@@ -15,12 +15,12 @@ module.exports.run = async (bot, message, args) => {
       message.channel.send(response)
       .then(sentAnswer => { feedback.isResultAccurate(bot, sentAnswer, message.author) })
       .catch(console.error)
-      console.log(videos[1])
     })
 }
 
 module.exports.help = {
   name: 'porn',
   description: 'on se met bien, cherche du porn oklm entre potes',
-  examples: 'stp porn midget furry fucks Bob Razowski'
+  examples: 'stp porn midget furry fucks Bob Razowski',
+  category: 'ponctuation'
 }

@@ -36,7 +36,7 @@ module.exports.run = async (bot, message, args) => {
       if (error) {
         con.query(`UPDATE users SET money = '${parseFloat(parseFloat(donorProfile.money) - parseFloat(gift))}' WHERE userID = '${donorProfile.userID}' AND guild = '${donorProfile.guild}'`, (e) => {
           if (e) { 
-            console.log(e)
+            console.error('\x1b[41m%s\x1b[0m %s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, e)
             return message.reply('désolé il y a eu un soucis..')
           }
           Users.createUser(target.id, message.guild.id, 0, gift)
@@ -44,12 +44,12 @@ module.exports.run = async (bot, message, args) => {
       }
       con.query(`UPDATE users SET money = '${parseFloat(parseFloat(donorProfile.money) - parseFloat(gift))}' WHERE userID = '${donorProfile.userID}' AND guild = '${donorProfile.guild}'`, (e) => {
         if (e) { 
-          console.log(e)
+          console.error('\x1b[41m%s\x1b[0m %s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, e)
           return message.reply('désolé il y a eu un soucis..')
         }
         con.query(`UPDATE users SET money = '${parseFloat(parseFloat(targetProfile.money) + parseFloat(gift))}' WHERE userID = '${targetProfile.userID}' AND guild = '${targetProfile.guild}'`, (er) => {
           if (er) {
-            console.log(er)
+            console.error('\x1b[41m%s\x1b[0m %s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, er)
             return message.reply('désolé il y a eu un soucis..')
           }
           return message.channel.send(`Oof, ça ressemble à un annulingus ça ! ${message.author} vient de donner ${gift} certithunes à ${target}`)
@@ -62,5 +62,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'donne',
   description: 'Donne des certithunes à quelqu\'un',
-  examples: 'stp donne @user#1234 X'
+  examples: 'stp donne @user#1234 X',
+  category: 'streetlife'
 }

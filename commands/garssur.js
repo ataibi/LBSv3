@@ -20,5 +20,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'gs',
   description: 'Mentionne tous les gars sûrs du serveur.',
-  examples: ['stp gs']
+  examples: ['stp gs'],
+  category: 'utile'
 }

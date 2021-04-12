@@ -6,7 +6,7 @@ module.exports.run = async (bot, message, args, queue) => {
     let botIsConnected = bot.voice.connections.get(message.guild.id)
     let minutes = 00
     let secondes = 00
-    if (botIsConnected) {
+    if (botIsConnected && botIsConnected.dispatcher) {
         progress = parseInt(botIsConnected.dispatcher.streamTime / 1000)
         minutes = Math.floor(progress / 60)
         secondes = parseInt(progress % 60)
@@ -31,6 +31,7 @@ module.exports.run = async (bot, message, args, queue) => {
 module.exports.help = {
     name: 'song',
     description: 'Affiche la musique en cours et la musique suivante',
-    examples: 'stp song'
+    examples: 'stp song',
+    category: 'musique'
   }
   

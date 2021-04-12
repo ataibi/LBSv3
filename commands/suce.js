@@ -15,5 +15,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'suce',
   description: 'Dit à l\'utilisateur mentionné de lui sucer la bite, s\'il n\'y en a pas, suce l\'auteur du message',
-  examples: ['stp suce @user#1234', 'stp suce']
+  examples: ['stp suce @user#1234', 'stp suce'],
+  category: 'politesse'
 }

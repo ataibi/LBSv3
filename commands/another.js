@@ -29,5 +29,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'another',
   description: 'Another one.',
-  examples: ['stp another @user#1234', 'stp another']
+  examples: ['stp another @user#1234', 'stp another'],
+  category: 'meme'
 }

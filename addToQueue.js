@@ -4,14 +4,12 @@ const music = require('./music.js')
 const ytlist = require('youtube-playlist');
 
 module.exports.video = async (videoURL, message, voiceConnection, queue) => {
-    console.log('yeet')
+    console.log("adding video to queue")
     const video = await ytdl.getInfo(videoURL)
-    // console.log(video)
 		if (!video) {
 		console.error()
 		return message.channel.send("euuuuh petit soucis de lecture, essaie une autre video")
         }
-        console.log('coucou toi')
         const embedVar = new Discord.MessageEmbed()
             .setTitle(`🎵 **${video.videoDetails.title}** a été rajouté à la liste de lecture`)
             .addField('Durée :', ` ${Math.floor(video.videoDetails.lengthSeconds / 60)}:${parseInt(video.videoDetails.lengthSeconds % 60) < 10 ? '0' + video.videoDetails.lengthSeconds % 60 : video.videoDetails.lengthSeconds % 60}`)
@@ -22,7 +20,7 @@ module.exports.video = async (videoURL, message, voiceConnection, queue) => {
         message.channel.send({embed : embedVar} )
             .then((err, answer) => {
                 if (!queue.guildId) {
-                    console.log('pas de queue')
+                    console.log(`starting playlist with ${video.videoDetails.title}`)
                     queue.guildId = []
                     queue.guildId[0] = {}
                     queue.guildId[0].streamOptions = { volume: 1 }
@@ -35,9 +33,8 @@ module.exports.video = async (videoURL, message, voiceConnection, queue) => {
                     queue.guildId[0].np = false
                     music.playMusic(message.channel, voiceConnection, queue.guildId, 0, answer)
                 } else {
-                    console.log('queue deja creee')
+                    console.log(`playlist already existing, adding ${video.videoDetails.title} to the list`)
                     let queueSize = queue.guildId.length
-                    console.log('size : ' + queueSize)
                     queue.guildId[queueSize] = {}
                     queue.guildId[queueSize].addedBy = message.author.username
                     queue.guildId[queueSize].url = videoURL
@@ -45,8 +42,8 @@ module.exports.video = async (videoURL, message, voiceConnection, queue) => {
                     queue.guildId[queueSize].np = false
                     queue.guildId[queueSize].duration = video.videoDetails.lengthSeconds
                     queue.guildId[queueSize].title = video.videoDetails.title
-                    if (!voiceConnection.speaking) {
-                        console.log('lourd')
+                    if (voiceConnection.speaking == 0) {
+                        console.log(`bot inactive, can play ${video.videoDetails.title}`)
                         music.playMusic(message.channel, voiceConnection, queue.guildId, queueSize, answer)
                     }
                 }
@@ -55,7 +52,6 @@ module.exports.video = async (videoURL, message, voiceConnection, queue) => {
 }
 
 module.exports.playlist = async (playlistURL, message, voiceConnection, queue) => {
-    console.log('yote')
     ytlist(playlistURL, 'url')
     .then(res => {
         res.foreach(videoURL => {

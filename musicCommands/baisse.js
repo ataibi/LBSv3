@@ -40,5 +40,6 @@ module.exports.run = async (bot, message, args, queue) => {
 module.exports.help = {
   name: 'baisse',
   description: 'baisse le son (max = 100) si tu donnes pas de valeur ça change de 5%',
-  examples: 'stp baisse, stp baisse 5'
+  examples: 'stp baisse, stp baisse 5',
+  category: 'musique'
 }

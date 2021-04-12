@@ -13,5 +13,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'support',
   description: 'Approuve ton message.',
-  examples: 'stp support'
+  examples: 'stp support',
+  category: 'ponctuation'
 }

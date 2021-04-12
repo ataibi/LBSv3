@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+console.clear()
 const config = require('./config.json')
 const Discord = require('discord.js')
 const utilities = require('./users.js')
@@ -9,7 +10,7 @@ bot.commands = new Discord.Collection()
 bot.musicCommands = new Discord.Collection()
 
 fs.readdir('./commands', (err, files) => {
-  if (err) { console.log(err) }
+  if (err) { console.error('\x1b[41m%s\x1b[0m %s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, err) }
 
   const jsfile = files.filter(f => f.split('.').pop() === 'js')
   if (jsfile.length <= 0) {
@@ -19,14 +20,14 @@ fs.readdir('./commands', (err, files) => {
 
   jsfile.forEach((f) => {
     const props = require(`./commands/${f}`)
-    console.log(f + ' loaded')
+    console.log('\x1b[32m[\u2713] \x1b[32m%s\x1b[0m', `./commands/${f} loaded \x1b[0m`)
     bot.commands.set(props.help.name, props)
   })
 })
 
 
 fs.readdir('./musicCommands', (err, files) => {
-  if (err) { console.log(err) }
+  if (err) { console.error('\x1b[41m%s\x1b[0m %s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, err) }
 
   const musicFiles = files.filter(mf => mf.split('.').pop() === 'js')
   if (musicFiles.length <= 0) {
@@ -36,14 +37,13 @@ fs.readdir('./musicCommands', (err, files) => {
 
   musicFiles.forEach((mf) => {
     const props = require(`./musicCommands/${mf}`)
-    console.log(`music command ${mf} loaded`)
+    console.log('\x1b[32m[\u2713] \x1b[0m\x1b[32m%s\x1b[0m', `./musicCommands/${mf} loaded \x1b[0m`)
     bot.musicCommands.set(props.help.name, props)
   })
 })
 
 function talk (message) {
   const rand = Math.floor(Math.random() * 100) + 1
-  console.log(rand)
   const emoji = bot.emojis.cache.random()
   const phrases = ['LOURD!', 'Oui bien sûr', 'Non..', `suce moi ${message.author.username}`, 'J\'avous', `Eh ${message.author.username}, reste tranquille ma gueule`, 'C\'est pas drole.', 'YEET !']
   if (emoji) { phrases.push(`${emoji}`) }
@@ -55,7 +55,6 @@ function talk (message) {
 
 function addReaction (message) {
   const rand = Math.floor(Math.random() * 1000) + 1
-  console.log(`Random for reaction : ${rand}`)
   const emoji = bot.emojis.cache.random().id
   if (rand >= 990) {
     utilities.addXP(message, 30, 40, 0)
@@ -65,18 +64,20 @@ function addReaction (message) {
 
 var botActive = 0
 bot.on('ready', async () => {
-  console.log(`logged in as ${bot.user.username}`)
-  console.log('fetching members')
+  console.log('\x1b[33m[-] caching members...\x1b[0m')
   bot.guilds.fetch('396409083915272204')
   .then(guild => {
     guild.members.fetch()
-    .then(console.log('members fetched'))
+    .then(console.log('\x1b[32m[\u2713] \x1b[0m\x1b[34mmembers cached \x1b[0m'))
     .catch(console.error)
   })
   .catch(console.error)
+  console.log(`\x1b[32m[\u2713] \x1b[0m\x1b[34mlogged in as \x1b[0m\x1b[31m${bot.user.username} \x1b[0m`)
   botActivity(bot)
+  checkVocalConnection(bot)
   botActive = 1
   setInterval(function () { botActivity(bot) }, (40 * 60) * 1000)
+  setInterval(function () { checkVocalConnection(bot) }, (60 * 5) * 1000)
 })
 
 function botActivity (bot) {
@@ -92,6 +93,12 @@ function botActivity (bot) {
   }
 }
 
+function checkVocalConnection(bot) {
+  bot.guilds.cache.each( guild => {
+    utilities.addVocalXP(guild, 5, 16, 1)
+  })
+}
+
 const queue = new Map()
 
 bot.on('message', async message => {
@@ -103,8 +110,8 @@ bot.on('message', async message => {
   
   talk(message)
   addReaction(message)
-  if (messageArray[0].toLowerCase() !== prefix && messageArray[0] !== `<@${bot.user.id}>`) { return }
-  let cmd = messageArray[1].toLowerCase()
+  if (messageArray[0].toLowerCase() !== prefix && messageArray[0] !== `<@!${bot.user.id}>`) { return }
+  let cmd = messageArray[1]? messageArray[1].toLowerCase() : ''
 
   let i = 0
   let words = 0
@@ -114,7 +121,7 @@ bot.on('message', async message => {
     i++
   })
   words = messageArray.length
-  if (i === 1 && identified === 1 && words === 1) { return message.reply('Oui ?') } else if (words === 1 && messageArray[0] === prefix) { return message.reply('Oui ? (stp pls pour l\'aide, t\'es nul.)') }
+  if (i === 1 && identified === 1 && words === 1) { return message.reply('Oui ?') } else if (words === 1 && messageArray[0] === prefix) { return message.reply('Oui ? (`stp aide` pour l\'aide, t\'es nul.)') }
 
   if (cmd === '❤' || cmd === '<3') { cmd = 'jtm' }
   const commandfile = bot.commands.get(cmd)
@@ -125,7 +132,7 @@ bot.on('message', async message => {
   } else if (musicFile) {
     utilities.addXP(message, 10, 25, 1)
     musicFile.run(bot, message, args, queue)
-  } else { return message.reply("hmm... Je comprends absolument rien à ce que tu veux. Pour savoir quoi me demander, fais un petit 'stp pls' (t'es qu'une merde <3)") }
+  } else { return message.reply("hmm... Je comprends absolument rien à ce que tu veux. Pour savoir quoi me demander, fais un petit 'stp aide' (t'es qu'une merde <3)") }
 })
 
 // bot.login(config.testoken)

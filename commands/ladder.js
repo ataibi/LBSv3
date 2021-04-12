@@ -11,14 +11,14 @@ var con = mysql.createConnection({
 
 con.connect(err => {
   if (err) { throw err }
-  console.log('Connected to database.')
+  console.log('\x1b[32m[\u2713] \x1b[0m\x1b[34m%s\x1b[0m', `connected to database from ladder command. `)
 })
 
 module.exports.run = async (bot, message, args) => {
   let maxNumber
   if (!(maxNumber = parseInt(args[0]))) { maxNumber = 24 }
   con.query(`SELECT * FROM users WHERE guild = ${message.guild.id} ORDER BY experience DESC`, (err, userList) => {
-    if (err) console.log(err)
+    if (err) console.error('\x1b[41m%s\x1b[0m %s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, err)
     if (userList[0] && userList.length > 1 && userList.length < 25) {
       const ladder = new Discord.MessageEmbed()
         .setTitle(`Classement de certitude chez \`${message.guild.name}\``)
@@ -27,7 +27,6 @@ module.exports.run = async (bot, message, args) => {
       let user
       while (userList[position] && position < maxNumber) {
         let user = message.guild.members.cache.get(userList[position].userID)
-        console.log(`_______________________________\nUserList[${position}].userID: ` + userList[position].userID + '\n_______________________________\nuser: ' + user )
         ladder.addField(`__**#${position + 1} : ${user ? user.displayName : "Perdu dans l'incertitude"}**__`, `_${userList[position].experience} points de certitude.(${userList[position].money} certithunes)_`)
         position++
       }
@@ -39,5 +38,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'top',
   description: 'liste les n personnes les plus certaines du serveur (liste tous les utilisateurs par defaut)',
-  examples: 'stp top 10, stp top'
+  examples: 'stp top 10, stp top',
+  category: 'streetlife'
 }

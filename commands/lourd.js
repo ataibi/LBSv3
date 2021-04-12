@@ -15,5 +15,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'lourd',
   description: 'Dit à l\'utilisateur mentionné que c\'est lourd',
-  examples: ['stp lourd @user#1234', 'stp lourd']
+  examples: ['stp lourd @user#1234', 'stp lourd'],
+  category: 'ponctuation'
 }

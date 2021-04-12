@@ -17,5 +17,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'victime',
   description: 'Quand y\'a une victime tu fais cette commande.',
-  examples: 'stp victime, stp victime @user#1234'
+  examples: 'stp victime, stp victime @user#1234',
+  category: 'ponctuation'
 }

@@ -15,5 +15,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'gtfo',
   description: 'Restart le bot',
-  examples: 'stp gtfo'
+  examples: 'stp gtfo',
+  category: 'admin'
 }

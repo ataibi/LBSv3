@@ -8,7 +8,6 @@ const feedback = require('../feedback.js')
 const engine = new ImageSearch(config.engineID, config.googleAPI)
 
 module.exports.run = async (bot, message, args) => {
-  console.log('args[0]= ' + args[0])
   let index = 1
   let query = ''
   let pageNumber = 1
@@ -24,13 +23,12 @@ module.exports.run = async (bot, message, args) => {
   index = Math.floor(index)
   engine.search(query, { page: pageNumber })
     .then(images => {
-      console.log(query + ' ' + pageNumber + ' ' + index)
       const response = `Google Images me donne ça pour '${query}'\n${images[index - 1].url}`
       message.channel.send(response)
       .then(sentAnswer => { feedback.isResultAccurate(bot, sentAnswer, message.author) })
       .catch(console.error)
     }).catch(e => {
-        console.log(e)
+        console.error('\x1b[41m%s\x1b[0m %s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, e)
         message.channel.send('désolé je trouve rien');
     })
 }
@@ -38,5 +36,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'rg',
   description: '\'rg\' pour recherche google, ça envoie le premier resultat de la recherche d\'images',
-  examples: 'stp rg voiture'
+  examples: 'stp rg voiture',
+  category: 'utile'
 }

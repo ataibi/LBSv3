@@ -7,7 +7,8 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-  name: 'jetdedé',
+  name: 'dé',
   description: 'Envoie un chiffre aleatoire entre 1 et 6',
-  examples: 'stp jetdedé'
+  examples: 'stp dé',
+  category: 'utile'
 }

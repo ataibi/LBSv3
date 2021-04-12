@@ -3,7 +3,6 @@ const Discord = require('discord.js')
 
 module.exports.run = async (bot, message, args, queue) => {
     let guildId = message.guild.id
-    console.log(queue)
     let botIsConnected = bot.voice.connections.get(message.guild.id)
     let minutes = 00
     let secondes = 00
@@ -32,6 +31,7 @@ module.exports.run = async (bot, message, args, queue) => {
 module.exports.help = {
     name: 'queue',
     description: 'Affiche la liste de lecture en cours',
-    examples: 'stp queue'
+    examples: 'stp queue',
+    category: 'musique'
   }
   

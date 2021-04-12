@@ -2,52 +2,66 @@ const Discord = require('discord.js')
 
 module.exports.run = async (bot, message, args) => {
   let commands
-  if (args[0] === "music")
+  let category = args[0]
+  if (category === 'musique') {
     commands = bot.musicCommands
-  else {
+  } else {
     commands = bot.commands
   }
+
   let ncommands = 0
-  commands.forEach(command => ncommands++)
-
-  if (ncommands <= 24) {
-    const helpembed = new Discord.MessageEmbed()
-      .setDescription("Alors comme ça on a besoin d'aide ? Grosse flemme de faire du cas par cas donc j'te lache tous les trucs que tu peux me demander d'un coup :")
-      .setColor('#A4244E')
+  let categories = []
+  commands.forEach(command => {
+    if (!command.help.category) {
+      command.help.category = 'autre'
+    }
+    if (category && command.help.category === category)
+        ncommands++
+    if (!categories.includes(command.help.category))
+      categories.push(command.help.category)
+  })
+  if (!category) {
+    return message.reply(`J'ai arreté le gros, jfais que du detail maintenant, choisis une de ces catégories pour avoir de l'aide :\n **_${categories.toString().replace(/,/g, ", ")}_**`)
+  }
+  if (ncommands === 0) {
+    return message.reply(`Y'a pas de commande dans cette categorie. Essaie plutot une de ces categories : **_${categories.toString().replace(/,/g, ", ")}_**`)
+  } else if (ncommands <= 14) {
+    let helpMessage = (`**Voici les commandes de la categorie "${category.charAt(0).toUpperCase() + category.slice(1)}" :** `)
     commands.forEach(command => {
-      helpembed.addField(`__${command.help.name}:__ ${command.help.description}`, `\`${command.help.examples}\``)
+      if (category && command.help.category === category)
+          helpMessage += `\n\n**${command.help.name}**: _${command.help.description}_ \nexemple(s) : _${command.help.examples}_`
     })
-
     try {
-      message.author.send(helpembed)
-      message.reply("bébé ? t'as reçu ma dick pic en MP? Allez va donc voir ;)")
+      message.author.send(helpMessage)
+      message.reply("Je t'ai envoyé du renfort en MP")
     } catch (e) {
       message.reply("Eh maggle, j'peux pas t'envoyer de MP, on fait comment pour ta PLS là ?")
     }
   } else {
     try {
-      message.author.send("Alors comme ça on a besoin d'aide ? Grosse flemme de faire du cas par cas donc j'te lache tous les trucs que tu peux me demander d'un coup :")
+      message.author.send(`**Voici les commandes de la categorie "${category.charAt(0).toUpperCase() + category.slice(1)}" :** `)
         .then(() => {
           ncommands = 0
           let nPage = 0
-          let helpembed = new Discord.MessageEmbed()
-            .setColor('#A4244E')
-          helpembed.addField(`**Page ${nPage + 1}**`, '__')
+          let helpMessage = ''
           commands.forEach(command => {
-            ncommands++
-            if (ncommands >= 25) {
-              message.author.send(helpembed)
-              helpembed = new Discord.MessageEmbed()
-              helpembed.setColor('#A4244E')
-              nPage++
-              helpembed.addField(`**Page ${nPage + 1}**`, '__')
-              ncommands = 0
+            if (category && command.help.category === category) {
+              ncommands++
+              if (ncommands >= 15) {
+                message.author.send(helpMessage)
+                helpMessage = ''
+                nPage++
+                ncommands = 0
+              }
+              console.log(`${[ncommands, command.help.name]}`)
+              helpMessage += `\n\n**${command.help.name}**: _${command.help.description}_ \nexemple(s) : _${command.help.examples}_`
+            } else {
+
             }
-            helpembed.addField(`__${command.help.name}:__ ${command.help.description}`, `\`${command.help.examples}\``)
           })
-          if (nPage > 0 && ncommands < 24) { message.author.send(helpembed) }
+          if (nPage > 0 && ncommands < 15) { message.author.send(helpMessage) }
         })
-      message.reply("bébé ? t'as reçu ma dick pic en MP? Allez va donc voir ;)")
+      message.reply("Je t'ai envoyé du renfort en MP mon mignon")
     } catch (e) {
       message.reply("Eh maggle, j'peux pas t'envoyer de MP, on fait comment pour ta PLS là ?")
     }
@@ -55,7 +69,8 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-  name: 'pls',
+  name: 'aide',
   description: 'Pour les cas de PLS ultime, affiche l\'aide',
-  examples: 'stp pls, stp pls music'
+  examples: 'stp aide, stp aide musique, stp aide meme',
+  category: 'utile'
 }

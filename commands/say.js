@@ -7,7 +7,7 @@ module.exports.run = async (bot, message, args) => {
   const botmessage = args.join(' ')
   if (!args[0]) { return message.reply('tu veux me faire dire quelque chose mais tu me donnes rien à dire ? wtf dude') }
   message.delete({ timeout : 5, reason: 'stp dit'})
-    .then(msg => console.log(`message deleted :  ${msg.cleanContent} (author : ${message.author.username})`))
+    .then(msg => console.log('\x1b[41m%s\x1b[0m%s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} : `, `message deleted :  ${msg.cleanContent} (author : ${message.author.username})`))
     .catch(console.error)
   return message.channel.send(botmessage)
 }
@@ -15,5 +15,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'dit',
   description: 'repete après toi.(fonctions réservée aux gars sûrs ma gueule, j\'suis pas une victime)',
-  examples: 'stp dit je suce des bites.'
+  examples: 'stp dit je suce des bites.',
+  category: 'utile'
 }

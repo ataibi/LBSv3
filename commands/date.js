@@ -25,6 +25,13 @@ module.exports.run = async (bot, message, args) => {
         name: 'jeudiOK.jpg'
       }]
     })
+  } else if (day === 5) {
+    return message.channel.send('Nous sommes vendredi', {
+      files: [{
+        attachment: './images/vendredi.mp4',
+        name: 'vendredi.mp4'
+      }]
+    })
   } else {
     return message.channel.send("It's not wednesday my friends.", {
       files: [{
@@ -38,5 +45,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'date',
   description: 'Donne le jour de la semaine sous une forme originale',
-  examples: ['stp date']
+  examples: ['stp date'],
+  category: 'meme'
 }

@@ -17,5 +17,6 @@ module.exports.run = async (bot, message, args, queue) => {
 module.exports.help = {
   name: 'pause',
   description: 'pause la lecture de la musique',
-  examples: 'stp pause'
+  examples: 'stp pause',
+  category: 'musique'
 }

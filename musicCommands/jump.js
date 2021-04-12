@@ -6,7 +6,6 @@ const music = require('../music.js')
 module.exports.run = async (bot, message, args, queue) => {
     let guildId = message.guild.id
     let botIsConnected = bot.voice.connections.get(guildId)
-    console.log(queue.guildId)
     if (!queue.guildId) {
         return message.reply('pas de queue sur ce serveur.. si tu vois ce que je veux dire')
     } else if (!parseInt(args[0]) || !queue.guildId[parseInt(args[0]) - 1]) {
@@ -38,6 +37,7 @@ module.exports.run = async (bot, message, args, queue) => {
 module.exports.help = {
     name: 'pick',
     description: 'Affiche la liste de lecture en cours',
-    examples: 'stp pick'
+    examples: 'stp pick',
+    category: 'musique'
   }
   

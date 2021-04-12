@@ -76,7 +76,7 @@ module.exports.run = async (bot, message, args) => {
 
   Users.getUser(target, message.guild, (err, userProfile) => {
     if (err) {
-      console.log(err)
+      console.error('\x1b[41m%s\x1b[0m %s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, err)
       return message.channel.send(`${target.username} est absolument incertain.. je serais toi je lui parlerais pas `)
     }
     message.channel.send(userCard(userProfile, target))
@@ -85,5 +85,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'certitude',
   description: 'Ouais parce que mon dev savait pas quoi faire alors il a mis un systeme d\'experience en place',
-  examples: 'stp certitude, stp certitude @user#1234'
+  examples: 'stp certitude, stp certitude @user#1234',
+  category: 'streetlife'
 }

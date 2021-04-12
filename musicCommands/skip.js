@@ -15,5 +15,6 @@ module.exports.run = async (bot, message, args, queue) => {
 module.exports.help = {
   name: 'next',
   description: 'lourd',
-  examples: 'lourd'
+  examples: 'lourd',
+  category: 'musique'
 }

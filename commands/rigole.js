@@ -10,5 +10,6 @@ module.exports.run = async (bot, message, args) => {
 module.exports.help = {
   name: 'rigole',
   description: "T'es trop drole ma gueule putain",
-  examples: 'stp rigole'
+  examples: 'stp rigole',
+  category: 'ponctuation'
 }
