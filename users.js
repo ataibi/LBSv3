@@ -90,6 +90,9 @@ module.exports.addVocalXP = (guild, min, max, cmd) => {
     experience += experience + experience
     // console.log('jeudi certain, triple vocal XP')
   }
+  if (guild.voiceStates.cache.filter(voiceState => !voiceState.member.user.bot).size <= 1) {
+    return console.log('\x1b[41m%s\x1b[0m%s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, `Not enough people in vocal chat to give XP`)
+  }
   guild.voiceStates.cache.each(voiceState => {
     if (voiceState.member.user.bot) {
       return console.log('\x1b[41m%s\x1b[0m%s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, `${voiceState.member.nickname} is a bot and deserves no xp`)
@@ -129,7 +132,7 @@ module.exports.addXP = (message, min, max, cmd) => {
     if (err) {
       return module.exports.createUser(message.author.id, message.guild.id, experience, 0.00, message.author.username)
     }
-    let cooldown = Math.floor(Math.random() * 30000) + 6000
+    let cooldown = Math.floor(Math.random() * 300000) + 6000
     if (parseInt(userProfile.lastExperience) + cooldown >= Date.now() && cmd === 1) {
       return console.log('\x1b[41m%s\x1b[0m %s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, ` ${message.author.tag} gained xp too recently`)
     }
