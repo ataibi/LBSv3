@@ -95,10 +95,10 @@ module.exports.addVocalXP = (guild, min, max, cmd) => {
   }
   guild.voiceStates.cache.each(voiceState => {
     if (voiceState.member.user.bot) {
-      return console.log('\x1b[41m%s\x1b[0m%s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, `${voiceState.member.nickname} is a bot and deserves no xp`)
+      return console.log('\x1b[41m%s\x1b[0m%s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, `${voiceState.member.user.username} is a bot and deserves no xp`)
     }
     if(!voiceState.channel) {
-      return console.log('\x1b[41m%s\x1b[0m%s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, `${voiceState.member.nickname} is not actually connected`)
+      return console.log('\x1b[41m%s\x1b[0m%s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, `${voiceState.member.user.username} is not actually connected`)
     }
     module.exports.getUser(voiceState.member, guild, (err, userProfile) => {
       if (err) {
@@ -111,7 +111,7 @@ module.exports.addVocalXP = (guild, min, max, cmd) => {
       }
       con.query(`UPDATE users SET experience = ${userProfile.experience + experience}, username = '${voiceState.member.user.username}' WHERE userID = '${voiceState.member.id}' AND guild = '${guild.id}'`, (error) => {
         if (error) console.error('\x1b[41m%s\x1b[0m %s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, error)
-        console.log('\x1b[41m%s\x1b[0m%s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, `gave vocal xp to ${voiceState.member.nickname} because they are connected to ${voiceState.channel ? voiceState.channel.name : 'nothing'} on ${guild.name}<`)
+        console.log('\x1b[41m%s\x1b[0m%s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, `gave vocal xp to ${voiceState.member.user.username} because they are connected to ${voiceState.channel ? voiceState.channel.name : 'nothing'} on ${guild.name}<`)
       })
     })
   })
@@ -134,7 +134,7 @@ module.exports.addXP = (message, min, max, cmd) => {
     }
     let cooldown = Math.floor(Math.random() * 300000) + 6000
     if (parseInt(userProfile.lastExperience) + cooldown >= Date.now() && cmd === 1) {
-      return console.log('\x1b[41m%s\x1b[0m %s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, ` ${message.author.tag} gained xp too recently`)
+      return console.log('\x1b[41m%s\x1b[0m %s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, ` ${message.author.username} gained xp too recently`)
     }
     if (userProfile.experience + experience >= userProfile.experienceCap) {
       module.exports.increaseLevel(userProfile.level + 1, message.member)
