@@ -42,7 +42,7 @@ module.exports.video = async (videoURL, message, voiceConnection, queue) => {
                     queue.guildId[queueSize].np = false
                     queue.guildId[queueSize].duration = video.videoDetails.lengthSeconds
                     queue.guildId[queueSize].title = video.videoDetails.title
-                    if (voiceConnection.speaking == 0) {
+                    if (voiceConnection.speaking == false) {
                         console.log(`bot inactive, can play ${video.videoDetails.title}`)
                         music.playMusic(message.channel, voiceConnection, queue.guildId, queueSize, answer)
                     }

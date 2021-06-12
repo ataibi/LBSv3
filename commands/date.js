@@ -12,14 +12,14 @@ module.exports.run = async (bot, message, args) => {
       }]
     })
   } else if (day === 3) {
-    return message.channel.send("It's wednesday my dudes" + message.client.emojis.get('410832474382401546'), {
+    return message.channel.send("It's wednesday my dudes", {
       files: [{
         attachment: './images/wednesday.jpg',
         name: 'wednesday.jpg'
       }]
     })
   } else if (day === 4) {
-    return message.channel.send('Jeudi Ok is on the way' + message.client.emojis.get('408104603029078023'), {
+    return message.channel.send('Jeudi Ok is on the way', {
       files: [{
         attachment: './images/jeudiOK.jpg',
         name: 'jeudiOK.jpg'
@@ -30,6 +30,13 @@ module.exports.run = async (bot, message, args) => {
       files: [{
         attachment: './images/vendredi.mp4',
         name: 'vendredi.mp4'
+      }]
+    })
+  } else if (day === 0) {
+    return message.channel.send("Aujourd'hui c'est dimanche, comme chaque dimanche", {
+      files: [{
+        attachment: './images/dimanche.mp4',
+        name: 'dimanche.mp4'
       }]
     })
   } else {
