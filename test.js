@@ -1,7 +1,8 @@
-const ytpl = require('@distube/ytpl')
+const ytdl = require('ytdl-core-discord')
 
-ytpl("https://www.youtube.com/playlist?list=PLrBjj4brdIRwRkGTLKqH5hlS_mlMYn_J0").then(playlist => {
-    console.log(playlist)
-}).catch(err =>
-    console.error('\x1b[41m%s\x1b[0m %s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, err)
-)
+const play = async () => {
+  const response = await ytdl('https://www.youtube.com/watch?v=TGMJRnUxwwo', { type: 'opus', volume: 1, filter: 'audioonly' })
+  console.log(response)
+}
+
+play()

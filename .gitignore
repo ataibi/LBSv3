@@ -67,3 +67,4 @@ images/
 config.json
 .eslintrc.js
 .vscode/
+package-lock.json

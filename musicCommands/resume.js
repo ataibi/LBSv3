@@ -2,13 +2,13 @@
 const Discord = require('discord.js')
 
 module.exports.run = async (bot, message, args) => {
-  await bot.player.pause(message)
-  return message.channel.send("Une petite pause s'impose..")
+  await bot.player.resume(message)
+  return message.channel.send("Et c'est reparti !!")
 }
 
 module.exports.help = {
-  name: 'pause',
-  description: 'pause la lecture de la musique',
-  examples: 'stp pause',
+  name: 'play',
+  description: 'Reprend la lecture',
+  examples: 'stp play',
   category: 'musique'
 }

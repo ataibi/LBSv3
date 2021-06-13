@@ -5,6 +5,85 @@ const Discord = require('discord.js')
 const utilities = require('./users.js')
 const fs = require('fs')
 const bot = new Discord.Client()
+const { Player } = require('discord-music-player')
+
+const player = new Player(bot, {
+  leaveOnEnd: false,
+  leaveOnStop: false,
+  leaveOnEmpty: true,
+  timeout: (120 * 1000), // milliseconds
+  volume: 100, // percentage
+  quality: 'high'
+})
+
+bot.player = player
+
+bot.player
+// Emitted when channel was empty.
+  .on('channelEmpty', (message, queue) =>
+    message.channel.send(`Vous m'avez laissé tout seul...`))
+// Emitted when a song was added to the queue.
+  .on('songAdd', (message, queue, song) =>
+    message.channel.send(`On écoute **${song.name}** dès qu'on a le temps tkt même pas`))
+// Emitted when a playlist was added to the queue.
+  .on('playlistAdd', (message, queue, playlist) =>
+    message.channel.send(`La playlist ${playlist.name} contenant ${playlist.videoCount} musiques a été ajoutée !`))
+// Emitted when there was no more music to play.
+  .on('queueEnd', (message, queue) =>
+    message.channel.send(`Rajoutez de la musique j'étais ienb`))
+// Emitted when a song changed.
+  .on('songChanged', (message, newSong, oldSong) =>
+    message.channel.send(`C'est au tour de **${newSong.name}** maintenant !`))
+// Emitted when a first song in the queue started playing (after play method).
+  .on('songFirst', (message, song) =>
+    message.channel.send(`Et c'est parti ! On écoute maintenant **${song.name}**`))
+// Emitted when someone disconnected the bot from the channel.
+  .on('clientDisconnect', (message, queue) =>
+    message.channel.send(`J'me suis fait déco oklm..`))
+// Emitted when deafenOnJoin is true and the bot was undeafened
+  .on('clientUndeafen', (message, queue) =>
+    message.channel.send(`Petit soucis audio pardon`))
+// Emitted when there was an error with NonAsync functions.
+  .on('error', (error, message) => {
+    switch (error) {
+      // Thrown when the YouTube search could not find any song with that query.
+      case 'SearchIsNull':
+        message.channel.send(`J'ai rien trouvé déso pas déso`)
+        break
+        // Thrown when the provided YouTube Playlist could not be found.
+      case 'InvalidPlaylist':
+        message.channel.send(`Pas de playlist pour ce lien..`)
+        break
+        // Thrown when the provided Spotify Song could not be found.
+      case 'InvalidSpotify':
+        message.channel.send(`J'ai pas trouvé de son sur spotify pour ce lien`)
+        break
+        // Thrown when the Guild Queue does not exist (no music is playing).
+      case 'QueueIsNull':
+        message.channel.send(`Y'a pas de musique là`)
+        break
+        // Thrown when the Members is not in a VoiceChannel.
+      case 'VoiceChannelTypeInvalid':
+        message.channel.send(`T'es pas en vocal je peux pas encore pop de la musique directement dans ton cerveau.`)
+        break
+        // Thrown when the current playing song was an live transmission (that is unsupported).
+      case 'LiveUnsupported':
+        message.channel.send(`Les vidéos live sont pas prises en charge encore.`)
+        break
+        // Thrown when the current playing song was unavailable.
+      case 'VideoUnavailable':
+        message.channel.send(`Y'a un problème avec cette musique donc nique`)
+        break
+        // Thrown when provided argument was Not A Number.
+      case 'NotANumber':
+        message.channel.send(`Tu m'as pas donné de chiffre...`)
+        break
+        // Thrown when the Guild Queue does not exist (no music is playing).
+      default:
+        message.channel.send(`**Une erreur inconnue au bataillon :** ${error}`)
+        break
+    }
+  })
 
 bot.commands = new Discord.Collection()
 bot.musicCommands = new Discord.Collection()
@@ -24,7 +103,6 @@ fs.readdir('./commands', (err, files) => {
     bot.commands.set(props.help.name, props)
   })
 })
-
 
 fs.readdir('./musicCommands', (err, files) => {
   if (err) { console.error('\x1b[41m%s\x1b[0m %s', `> ${new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(new Date())} :`, err) }
@@ -66,12 +144,12 @@ var botActive = 0
 bot.on('ready', async () => {
   console.log('\x1b[33m[-] caching members...\x1b[0m')
   bot.guilds.fetch('396409083915272204')
-  .then(guild => {
-    guild.members.fetch()
-    .then(console.log('\x1b[32m[\u2713] \x1b[0m\x1b[34mmembers cached \x1b[0m'))
+    .then(guild => {
+      guild.members.fetch()
+        .then(console.log('\x1b[32m[\u2713] \x1b[0m\x1b[34mmembers cached \x1b[0m'))
+        .catch(console.error)
+    })
     .catch(console.error)
-  })
-  .catch(console.error)
   console.log(`\x1b[32m[\u2713] \x1b[0m\x1b[34mlogged in as \x1b[0m\x1b[31m${bot.user.username} \x1b[0m`)
   botActivity(bot)
   checkVocalConnection(bot)
@@ -93,13 +171,11 @@ function botActivity (bot) {
   }
 }
 
-function checkVocalConnection(bot) {
-  bot.guilds.cache.each( guild => {
+function checkVocalConnection (bot) {
+  bot.guilds.cache.each(guild => {
     utilities.addVocalXP(guild, 5, 16, 1)
   })
 }
-
-const queue = new Map()
 
 bot.on('message', async message => {
   if ((message.author.bot === 1 && message.author.id !== bot.user.id) || message.channel.type === 'dm') { return }
@@ -107,11 +183,11 @@ bot.on('message', async message => {
   const prefix = config.prefix
   const messageArray = message.content.replace(/ +/g, ' ').split(' ')
   const args = messageArray.slice(2)
-  
+
   talk(message)
   addReaction(message)
   if (messageArray[0].toLowerCase() !== prefix && messageArray[0] !== `<@!${bot.user.id}>`) { return }
-  let cmd = messageArray[1]? messageArray[1].toLowerCase() : ''
+  let cmd = messageArray[1] ? messageArray[1].toLowerCase() : ''
 
   let i = 0
   let words = 0
@@ -131,7 +207,7 @@ bot.on('message', async message => {
     setTimeout(() => commandfile.run(bot, message, args), 12)
   } else if (musicFile) {
     utilities.addXP(message, 10, 25, 1)
-    musicFile.run(bot, message, args, queue)
+    musicFile.run(bot, message, args)
   } else { return message.reply("hmm... Je comprends absolument rien à ce que tu veux. Pour savoir quoi me demander, fais un petit 'stp aide' (t'es qu'une merde <3)") }
 })
 
