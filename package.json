@@ -9,7 +9,7 @@
   "author": "ataibi",
   "license": "ISC",
   "dependencies": {
-    "@discordjs/opus": "^0.5.3",
+    "@discordjs/opus": "^0.8.0",
     "@distube/ytpl": "^1.0.2",
     "axios": "^0.21.1",
     "discord-music-player": "^7.1.4",
